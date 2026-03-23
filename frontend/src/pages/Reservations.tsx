@@ -1,14 +1,16 @@
 import { useState, useEffect } from 'react';
 import Calendar from '../components/Calendar';
-import AnimateOnScroll from '../components/AnimateOnScroll';
 import { getAvailability, createBooking, type CreateBookingData } from '../services/api';
 import { useToast } from '../components/Toast';
 
-const studios = [
-  { id: 'studio-a', name: 'Studio A', subtitle: 'Gravação', price: '25€/h' },
-  { id: 'studio-b', name: 'Studio B', subtitle: 'Produção', price: '20€/h' },
-  { id: 'studio-c', name: 'Studio C', subtitle: 'Ensaio', price: '15€/h' },
+const rooms = [
+  { id: 'veludo', name: 'Veludo' },
+  { id: 'obsidiana', name: 'Obsidiana' },
+  { id: 'eclipse', name: 'Eclipse' },
+  { id: 'espaco-completo', name: 'Espaço Completo' },
 ];
+
+const timeSlots = ['14:00', '16:00', '18:00', '20:00', '22:00', '00:00'];
 
 export default function Reservations() {
   const { addToast } = useToast();
@@ -16,19 +18,29 @@ export default function Reservations() {
   const [loading, setLoading] = useState(true);
   const [submitting, setSubmitting] = useState(false);
 
-  // Form state
-  const [selectedStudio, setSelectedStudio] = useState('studio-a');
-  const [checkIn, setCheckIn] = useState('');
-  const [checkOut, setCheckOut] = useState('');
-  const [guests, setGuests] = useState(1);
+  // Selection state
+  const [selectedRoom, setSelectedRoom] = useState('veludo');
+  const [selectedDate, setSelectedDate] = useState('');
+  const [selectedDates, setSelectedDates] = useState<string[]>([]);
+  const [selectedSlots, setSelectedSlots] = useState<string[]>([]);
+  const [fullDay, setFullDay] = useState(false);
+  const [multiDay, setMultiDay] = useState(false);
+
+  // Contact modal
+  const [showContactForm, setShowContactForm] = useState(false);
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
   const [phone, setPhone] = useState('');
-  const [notes, setNotes] = useState('');
 
   useEffect(() => {
     loadAvailability();
   }, []);
+
+  useEffect(() => {
+    if (fullDay) {
+      setSelectedSlots([...timeSlots]);
+    }
+  }, [fullDay]);
 
   async function loadAvailability() {
     try {
@@ -42,242 +54,284 @@ export default function Reservations() {
     }
   }
 
-  const handleDateSelect = (ci: string, co: string) => {
-    setCheckIn(ci);
-    setCheckOut(co);
+  const toggleSlot = (slot: string) => {
+    if (fullDay) return;
+    setSelectedSlots((prev) =>
+      prev.includes(slot) ? prev.filter((s) => s !== slot) : [...prev, slot],
+    );
+  };
+
+  const handleReservar = () => {
+    const hasDate = multiDay ? selectedDates.length > 0 : !!selectedDate;
+    if (!hasDate) {
+      addToast('Seleciona uma data no calendário.', 'error');
+      return;
+    }
+    if (selectedSlots.length === 0) {
+      addToast('Seleciona pelo menos um horário.', 'error');
+      return;
+    }
+    setShowContactForm(true);
   };
 
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
-
-    if (!checkIn || !checkOut) {
-      addToast('Seleciona as datas no calendário.', 'error');
-      return;
-    }
-
     setSubmitting(true);
     try {
-      const studioLabel = studios.find(s => s.id === selectedStudio)?.name || selectedStudio;
+      const room = rooms.find((r) => r.id === selectedRoom)?.name || selectedRoom;
+      const slots = selectedSlots.sort().join(', ');
+      const dates = multiDay ? selectedDates.sort() : [selectedDate];
+
       const data: CreateBookingData = {
-        check_in: checkIn,
-        check_out: checkOut,
-        guests,
+        check_in: dates[0],
+        check_out: dates[dates.length - 1] || dates[0],
+        guests: 1,
         name,
         email,
         phone,
-        notes: `[${studioLabel}] ${notes}`.trim(),
+        notes: `[${room}] Horários: ${slots}${fullDay ? ' (dia completo)' : ''}`,
       };
       await createBooking(data);
-      addToast('Agendamento submetido com sucesso! Entraremos em contacto brevemente.', 'success');
-      setCheckIn('');
-      setCheckOut('');
-      setGuests(1);
+      addToast('Reserva submetida com sucesso! Receberás a confirmação por e-mail.', 'success');
+      setSelectedDate('');
+      setSelectedDates([]);
+      setSelectedSlots([]);
+      setFullDay(false);
+      setMultiDay(false);
       setName('');
       setEmail('');
       setPhone('');
-      setNotes('');
+      setShowContactForm(false);
       loadAvailability();
     } catch (err: any) {
-      addToast(err.message || 'Erro ao submeter agendamento.', 'error');
+      addToast(err.message || 'Erro ao submeter reserva.', 'error');
     } finally {
       setSubmitting(false);
     }
   }
 
-  const inputClasses = "w-full px-4 py-3 rounded-xl border border-white/10 bg-white/5 text-white placeholder-white/30 focus:bg-white/10 focus:border-[#e2ff00]/50 focus:ring-2 focus:ring-[#e2ff00]/20 text-sm transition-all duration-300 outline-none";
+  const activeDate = multiDay
+    ? selectedDates.length > 0
+      ? selectedDates.sort()[selectedDates.length - 1]
+      : ''
+    : selectedDate;
+
+  const formatSelectedDate = (dateStr: string) => {
+    if (!dateStr) return '—';
+    const d = new Date(dateStr + 'T12:00:00');
+    return d.toLocaleDateString('pt-PT', {
+      weekday: 'long',
+      day: '2-digit',
+      month: '2-digit',
+      year: 'numeric',
+    });
+  };
 
   return (
-    <main className="page-enter bg-[#0a0a0a]">
-      {/* Page Header */}
-      <div className="relative pt-32 pb-16 overflow-hidden">
-        <div className="absolute inset-0">
-          <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] bg-[#e2ff00]/[0.02] rounded-full blur-[100px]" />
-        </div>
-        <div className="relative z-10 text-center px-4">
-          <span className="inline-block text-xs uppercase tracking-[0.4em] text-[#e2ff00]/60 font-medium mb-4">
-            Agenda a tua sessão
-          </span>
-          <h1 className="font-display text-4xl sm:text-5xl md:text-6xl font-bold text-white tracking-tight">
-            Reservar Estúdio
-          </h1>
+    <main className="page-enter bg-[#0a0a0a] min-h-screen">
+      {/* Header */}
+      <div className="pt-32 pb-12 text-center px-4">
+        <h1 className="font-display text-5xl sm:text-6xl md:text-7xl lg:text-8xl font-bold text-white uppercase tracking-tight mb-8">
+          Reservas
+        </h1>
+        <div className="space-y-1.5 text-white/35 text-sm tracking-wide">
+          <p>Escolhe a sala pretendida</p>
+          <p>Seleciona a data e hora</p>
+          <p>Recebe a confirmação e todas as informações no e-mail</p>
         </div>
       </div>
 
-      <div className="max-w-6xl mx-auto px-4 sm:px-6 pb-24">
-        {/* Studio Selection */}
-        <AnimateOnScroll animation="fade-up">
-          <div className="mb-12">
-            <h2 className="font-display text-xl font-semibold text-white mb-4">Escolhe o estúdio</h2>
-            <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
-              {studios.map((studio) => (
-                <button
-                  key={studio.id}
-                  onClick={() => setSelectedStudio(studio.id)}
-                  className={`text-left p-5 rounded-xl border transition-all duration-300 ${
-                    selectedStudio === studio.id
-                      ? 'border-[#e2ff00]/50 bg-[#e2ff00]/5'
-                      : 'border-white/5 bg-[#111] hover:border-white/10'
+      {/* Booking Widget */}
+      <div className="max-w-4xl mx-auto px-4 sm:px-6 pb-28">
+        <div className="rounded-2xl border border-white/[0.08] bg-[#0c0c0c] overflow-hidden">
+          {/* ── Room Tabs ── */}
+          <div className="flex border-b border-white/[0.06]">
+            {rooms.map((room, i) => (
+              <button
+                key={room.id}
+                onClick={() => setSelectedRoom(room.id)}
+                className={`
+                  flex-1 flex items-center justify-between gap-2 px-4 sm:px-5 py-4 text-sm transition-all
+                  ${i < rooms.length - 1 ? 'border-r border-white/[0.06]' : ''}
+                  ${selectedRoom === room.id ? 'text-white bg-white/[0.02]' : 'text-white/30 hover:text-white/45 hover:bg-white/[0.01]'}
+                `}
+              >
+                <span className="font-medium truncate">{room.name}</span>
+                <span
+                  className={`w-3 h-3 rounded-full flex-shrink-0 border transition-all ${
+                    selectedRoom === room.id
+                      ? 'border-white/60 bg-white'
+                      : 'border-white/15'
                   }`}
-                >
-                  <div className="flex items-center justify-between mb-2">
-                    <span className={`text-xs uppercase tracking-wider font-medium ${
-                      selectedStudio === studio.id ? 'text-[#e2ff00]' : 'text-white/30'
-                    }`}>
-                      {studio.subtitle}
-                    </span>
-                    <span className={`text-lg font-display font-bold ${
-                      selectedStudio === studio.id ? 'text-[#e2ff00]' : 'text-white/50'
-                    }`}>
-                      {studio.price}
-                    </span>
-                  </div>
-                  <h3 className={`font-display text-lg font-semibold ${
-                    selectedStudio === studio.id ? 'text-white' : 'text-white/60'
-                  }`}>
-                    {studio.name}
-                  </h3>
-                </button>
-              ))}
+                />
+              </button>
+            ))}
+          </div>
+
+          {/* ── Calendar ── */}
+          {loading ? (
+            <div className="skeleton h-[420px] w-full" />
+          ) : (
+            <Calendar
+              unavailableDates={unavailableDates}
+              onSelectDate={setSelectedDate}
+              selectedDate={selectedDate}
+              multiDay={multiDay}
+              selectedDates={selectedDates}
+              onSelectMultiple={setSelectedDates}
+            />
+          )}
+
+          {/* ── Details Strip ── */}
+          <div className="grid grid-cols-3 border-t border-white/[0.06]">
+            <div className="px-4 sm:px-5 py-4 border-r border-white/[0.06]">
+              <span className="text-[10px] uppercase tracking-widest text-white/25 block mb-1">Sala</span>
+              <span className="text-sm text-white font-medium">
+                {rooms.find((r) => r.id === selectedRoom)?.name}
+              </span>
+            </div>
+            <div className="px-4 sm:px-5 py-4 border-r border-white/[0.06]">
+              <span className="text-[10px] uppercase tracking-widest text-white/25 block mb-1">Data</span>
+              <span className="text-sm text-white font-medium">{formatSelectedDate(activeDate)}</span>
+            </div>
+            <div className="px-4 sm:px-5 py-4">
+              <span className="text-[10px] uppercase tracking-widest text-white/25 block mb-1">Disponibilidade</span>
+              <span className="text-sm text-white font-medium">Sujeita a confirmação</span>
             </div>
           </div>
-        </AnimateOnScroll>
 
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-12">
-          {/* Calendar */}
-          <AnimateOnScroll animation="fade-right">
-            <div>
-              <h2 className="font-display text-xl font-semibold text-white mb-4">Disponibilidade</h2>
-              {loading ? (
-                <div className="skeleton h-80 w-full rounded-2xl" />
-              ) : (
-                <Calendar
-                  unavailableDates={unavailableDates}
-                  onSelectRange={handleDateSelect}
-                  selectedCheckIn={checkIn}
-                  selectedCheckOut={checkOut}
+          {/* ── Options & Time Slots ── */}
+          <div className="px-4 sm:px-5 py-5 border-t border-white/[0.06] space-y-5">
+            {/* Checkboxes */}
+            <div className="flex items-center gap-8">
+              <label className="flex items-center gap-2.5 cursor-pointer select-none">
+                <input
+                  type="checkbox"
+                  checked={fullDay}
+                  onChange={(e) => setFullDay(e.target.checked)}
+                  className="w-3.5 h-3.5 rounded-[3px] border border-white/20 bg-transparent accent-white cursor-pointer"
                 />
-              )}
+                <span className="text-xs text-white/45">Reservar dia completo</span>
+              </label>
+              <label className="flex items-center gap-2.5 cursor-pointer select-none">
+                <input
+                  type="checkbox"
+                  checked={multiDay}
+                  onChange={(e) => {
+                    setMultiDay(e.target.checked);
+                    if (!e.target.checked) setSelectedDates([]);
+                  }}
+                  className="w-3.5 h-3.5 rounded-[3px] border border-white/20 bg-transparent accent-white cursor-pointer"
+                />
+                <span className="text-xs text-white/45">Reservar vários dias</span>
+              </label>
             </div>
-          </AnimateOnScroll>
 
-          {/* Form */}
-          <AnimateOnScroll animation="fade-left" delay={100}>
-            <div>
-              <h2 className="font-display text-xl font-semibold text-white mb-4">Dados da reserva</h2>
-              <form onSubmit={handleSubmit} className="space-y-5 bg-[#111] rounded-2xl border border-white/5 p-6">
-                {/* Dates display */}
-                <div className="grid grid-cols-2 gap-4">
-                  <div>
-                    <label htmlFor="check_in" className="block text-xs font-medium text-white/40 uppercase tracking-wide mb-2">
-                      Data início
-                    </label>
-                    <input
-                      id="check_in"
-                      type="date"
-                      value={checkIn}
-                      onChange={(e) => setCheckIn(e.target.value)}
-                      required
-                      className={inputClasses}
+            {/* Time slots */}
+            <div className="flex flex-wrap items-center gap-x-5 gap-y-3">
+              {timeSlots.map((slot) => {
+                const active = selectedSlots.includes(slot);
+                return (
+                  <button
+                    key={slot}
+                    onClick={() => toggleSlot(slot)}
+                    disabled={fullDay}
+                    className={`
+                      flex items-center gap-2 text-xs transition-all
+                      ${active ? 'text-white' : 'text-white/30 hover:text-white/50'}
+                      ${fullDay ? 'opacity-40 cursor-not-allowed' : 'cursor-pointer'}
+                    `}
+                  >
+                    <span
+                      className={`w-[6px] h-[6px] rounded-full transition-colors ${
+                        active ? 'bg-white' : 'bg-white/25'
+                      }`}
                     />
-                  </div>
-                  <div>
-                    <label htmlFor="check_out" className="block text-xs font-medium text-white/40 uppercase tracking-wide mb-2">
-                      Data fim
-                    </label>
-                    <input
-                      id="check_out"
-                      type="date"
-                      value={checkOut}
-                      onChange={(e) => setCheckOut(e.target.value)}
-                      required
-                      className={inputClasses}
-                    />
-                  </div>
-                </div>
+                    {slot}
+                  </button>
+                );
+              })}
+            </div>
 
-                <div>
-                  <label htmlFor="guests" className="block text-xs font-medium text-white/40 uppercase tracking-wide mb-2">
-                    Nº de pessoas
-                  </label>
-                  <input
-                    id="guests"
-                    type="number"
-                    min={1}
-                    max={20}
-                    value={guests}
-                    onChange={(e) => setGuests(parseInt(e.target.value) || 1)}
-                    required
-                    className={inputClasses}
-                  />
-                </div>
+            {/* Reservar button */}
+            <div className="pt-1">
+              <button
+                onClick={handleReservar}
+                className="px-7 py-2 text-xs font-medium border border-white/15 text-white/80 rounded-md hover:bg-white/[0.04] hover:border-white/25 hover:text-white transition-all tracking-wide"
+              >
+                Reservar
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
 
-                <div>
-                  <label htmlFor="name" className="block text-xs font-medium text-white/40 uppercase tracking-wide mb-2">
-                    Nome completo
-                  </label>
-                  <input
-                    id="name"
-                    type="text"
-                    value={name}
-                    onChange={(e) => setName(e.target.value)}
-                    required
-                    className={inputClasses}
-                  />
-                </div>
-
-                <div>
-                  <label htmlFor="email" className="block text-xs font-medium text-white/40 uppercase tracking-wide mb-2">
-                    Email
-                  </label>
-                  <input
-                    id="email"
-                    type="email"
-                    value={email}
-                    onChange={(e) => setEmail(e.target.value)}
-                    required
-                    className={inputClasses}
-                  />
-                </div>
-
-                <div>
-                  <label htmlFor="phone" className="block text-xs font-medium text-white/40 uppercase tracking-wide mb-2">
-                    Telefone
-                  </label>
-                  <input
-                    id="phone"
-                    type="tel"
-                    value={phone}
-                    onChange={(e) => setPhone(e.target.value)}
-                    required
-                    className={inputClasses}
-                  />
-                </div>
-
-                <div>
-                  <label htmlFor="notes" className="block text-xs font-medium text-white/40 uppercase tracking-wide mb-2">
-                    Notas / pedidos especiais
-                  </label>
-                  <textarea
-                    id="notes"
-                    value={notes}
-                    onChange={(e) => setNotes(e.target.value)}
-                    rows={3}
-                    className={inputClasses}
-                  />
-                </div>
-
+      {/* ── Contact Modal ── */}
+      {showContactForm && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/70 backdrop-blur-sm px-4">
+          <div className="bg-[#111] border border-white/10 rounded-2xl p-8 w-full max-w-md animate-in">
+            <h2 className="font-display text-xl font-semibold text-white mb-1">Dados de contacto</h2>
+            <p className="text-xs text-white/30 mb-6">Preenche os teus dados para confirmar a reserva.</p>
+            <form onSubmit={handleSubmit} className="space-y-4">
+              <div>
+                <label htmlFor="r-name" className="block text-[11px] uppercase tracking-widest text-white/35 mb-1.5">
+                  Nome completo
+                </label>
+                <input
+                  id="r-name"
+                  type="text"
+                  value={name}
+                  onChange={(e) => setName(e.target.value)}
+                  required
+                  className="w-full px-4 py-2.5 rounded-lg border border-white/10 bg-white/5 text-white text-sm placeholder-white/15 focus:border-white/25 outline-none transition-all"
+                />
+              </div>
+              <div>
+                <label htmlFor="r-email" className="block text-[11px] uppercase tracking-widest text-white/35 mb-1.5">
+                  Email
+                </label>
+                <input
+                  id="r-email"
+                  type="email"
+                  value={email}
+                  onChange={(e) => setEmail(e.target.value)}
+                  required
+                  className="w-full px-4 py-2.5 rounded-lg border border-white/10 bg-white/5 text-white text-sm placeholder-white/15 focus:border-white/25 outline-none transition-all"
+                />
+              </div>
+              <div>
+                <label htmlFor="r-phone" className="block text-[11px] uppercase tracking-widest text-white/35 mb-1.5">
+                  Telefone
+                </label>
+                <input
+                  id="r-phone"
+                  type="tel"
+                  value={phone}
+                  onChange={(e) => setPhone(e.target.value)}
+                  required
+                  className="w-full px-4 py-2.5 rounded-lg border border-white/10 bg-white/5 text-white text-sm placeholder-white/15 focus:border-white/25 outline-none transition-all"
+                />
+              </div>
+              <div className="flex gap-3 pt-3">
+                <button
+                  type="button"
+                  onClick={() => setShowContactForm(false)}
+                  className="flex-1 px-4 py-2.5 text-sm text-white/35 border border-white/10 rounded-lg hover:bg-white/5 hover:text-white/50 transition-all"
+                >
+                  Cancelar
+                </button>
                 <button
                   type="submit"
                   disabled={submitting}
-                  className="btn-magnetic w-full bg-[#e2ff00] hover:bg-[#d4ef00] disabled:bg-white/10 disabled:text-white/30 text-black font-semibold py-3.5 rounded-xl transition-all duration-300 text-sm tracking-wider uppercase"
+                  className="flex-1 px-4 py-2.5 text-sm font-medium bg-white text-black rounded-lg hover:bg-white/90 disabled:opacity-40 transition-all"
                 >
-                  {submitting ? 'A enviar...' : 'Confirmar Agendamento'}
+                  {submitting ? 'A enviar...' : 'Confirmar'}
                 </button>
-              </form>
-            </div>
-          </AnimateOnScroll>
+              </div>
+            </form>
+          </div>
         </div>
-      </div>
+      )}
     </main>
   );
 }

@@ -4,7 +4,7 @@ import { useScrollDirection } from '../hooks/useScrollAnimation';
 
 const navItems = [
   { path: '/', label: 'Início' },
-  { path: '/reservas', label: 'Agendar' },
+  { path: '/reservas', label: 'Reservas' },
   { path: '/contactos', label: 'Contacto' },
 ];
 
