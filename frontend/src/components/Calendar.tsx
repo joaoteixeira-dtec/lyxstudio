@@ -1,5 +1,4 @@
 import { useState, useMemo } from 'react';
-import { useTranslation } from 'react-i18next';
 
 interface CalendarProps {
   unavailableDates: string[];
@@ -9,7 +8,6 @@ interface CalendarProps {
 }
 
 export default function Calendar({ unavailableDates, onSelectRange, selectedCheckIn, selectedCheckOut }: CalendarProps) {
-  const { t } = useTranslation();
   const [currentMonth, setCurrentMonth] = useState(() => {
     const now = new Date();
     return new Date(now.getFullYear(), now.getMonth(), 1);
@@ -19,10 +17,9 @@ export default function Calendar({ unavailableDates, onSelectRange, selectedChec
 
   const daysInMonth = new Date(currentMonth.getFullYear(), currentMonth.getMonth() + 1, 0).getDate();
   const firstDayOfWeek = new Date(currentMonth.getFullYear(), currentMonth.getMonth(), 1).getDay();
-  // Adjust: Monday = 0
   const startOffset = firstDayOfWeek === 0 ? 6 : firstDayOfWeek - 1;
 
-  const monthLabel = currentMonth.toLocaleDateString(document.documentElement.lang || 'pt', {
+  const monthLabel = currentMonth.toLocaleDateString('pt', {
     month: 'long',
     year: 'numeric',
   });
@@ -55,25 +52,25 @@ export default function Calendar({ unavailableDates, onSelectRange, selectedChec
   const weekDays = ['Seg', 'Ter', 'Qua', 'Qui', 'Sex', 'Sáb', 'Dom'];
 
   return (
-    <div className="bg-white rounded-xl shadow-sm border border-stone-200 p-4" role="application" aria-label={t('reservations.calendar_title')}>
+    <div className="bg-[#111] rounded-xl border border-white/10 p-4" role="application" aria-label="Calendário">
       {/* Month nav */}
       <div className="flex items-center justify-between mb-4">
         <button
           onClick={prevMonth}
-          className="p-2 hover:bg-stone-100 rounded-md transition-colors"
-          aria-label="Previous month"
+          className="p-2 hover:bg-white/5 rounded-md transition-colors"
+          aria-label="Mês anterior"
         >
-          <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 text-stone-600" viewBox="0 0 20 20" fill="currentColor">
+          <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 text-white/50" viewBox="0 0 20 20" fill="currentColor">
             <path fillRule="evenodd" d="M12.707 5.293a1 1 0 010 1.414L9.414 10l3.293 3.293a1 1 0 01-1.414 1.414l-4-4a1 1 0 010-1.414l4-4a1 1 0 011.414 0z" clipRule="evenodd" />
           </svg>
         </button>
-        <h3 className="font-semibold text-stone-800 capitalize">{monthLabel}</h3>
+        <h3 className="font-semibold text-white capitalize">{monthLabel}</h3>
         <button
           onClick={nextMonth}
-          className="p-2 hover:bg-stone-100 rounded-md transition-colors"
-          aria-label="Next month"
+          className="p-2 hover:bg-white/5 rounded-md transition-colors"
+          aria-label="Próximo mês"
         >
-          <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 text-stone-600" viewBox="0 0 20 20" fill="currentColor">
+          <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 text-white/50" viewBox="0 0 20 20" fill="currentColor">
             <path fillRule="evenodd" d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z" clipRule="evenodd" />
           </svg>
         </button>
@@ -82,7 +79,7 @@ export default function Calendar({ unavailableDates, onSelectRange, selectedChec
       {/* Weekday headers */}
       <div className="grid grid-cols-7 gap-1 mb-1">
         {weekDays.map((d) => (
-          <div key={d} className="text-center text-xs font-medium text-stone-500 py-1">
+          <div key={d} className="text-center text-xs font-medium text-white/30 py-1">
             {d}
           </div>
         ))}
@@ -107,13 +104,13 @@ export default function Calendar({ unavailableDates, onSelectRange, selectedChec
               disabled={isUnavailable || isPast}
               className={`
                 h-10 text-sm rounded-md font-medium transition-all
-                ${isUnavailable ? 'bg-red-50 text-red-300 cursor-not-allowed line-through' : ''}
-                ${isPast && !isUnavailable ? 'text-stone-300 cursor-not-allowed' : ''}
-                ${isSelected ? 'bg-amber-600 text-white shadow-sm' : ''}
-                ${inRange && !isSelected ? 'bg-amber-100 text-amber-800' : ''}
-                ${!isUnavailable && !isPast && !isSelected && !inRange ? 'hover:bg-stone-100 text-stone-700' : ''}
+                ${isUnavailable ? 'bg-red-500/10 text-red-400/50 cursor-not-allowed line-through' : ''}
+                ${isPast && !isUnavailable ? 'text-white/15 cursor-not-allowed' : ''}
+                ${isSelected ? 'bg-[#e2ff00] text-black shadow-sm shadow-[#e2ff00]/20' : ''}
+                ${inRange && !isSelected ? 'bg-[#e2ff00]/15 text-[#e2ff00]' : ''}
+                ${!isUnavailable && !isPast && !isSelected && !inRange ? 'hover:bg-white/5 text-white/70' : ''}
               `}
-              aria-label={`${day} ${monthLabel}${isUnavailable ? ` - ${t('reservations.unavailable')}` : ''}`}
+              aria-label={`${day} ${monthLabel}${isUnavailable ? ' - indisponível' : ''}`}
             >
               {day}
             </button>
@@ -122,13 +119,13 @@ export default function Calendar({ unavailableDates, onSelectRange, selectedChec
       </div>
 
       {/* Legend */}
-      <div className="flex items-center gap-4 mt-4 text-xs text-stone-500">
+      <div className="flex items-center gap-4 mt-4 text-xs text-white/40">
         <span className="flex items-center gap-1">
-          <span className="w-3 h-3 rounded bg-red-50 border border-red-200" />
-          {t('reservations.unavailable')}
+          <span className="w-3 h-3 rounded bg-red-500/10 border border-red-500/20" />
+          Indisponível
         </span>
         <span className="flex items-center gap-1">
-          <span className="w-3 h-3 rounded bg-amber-600" />
+          <span className="w-3 h-3 rounded bg-[#e2ff00]" />
           Selecionado
         </span>
       </div>

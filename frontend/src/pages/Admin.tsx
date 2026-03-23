@@ -1,5 +1,4 @@
 import { useState, useEffect, useCallback } from 'react';
-import { useTranslation } from 'react-i18next';
 import { useAuth } from '../context/AuthContext';
 import { useToast } from '../components/Toast';
 import {
@@ -14,7 +13,6 @@ import {
 import AdminLogin from './AdminLogin';
 
 export default function Admin() {
-  const { t } = useTranslation();
   const { token, isAdmin, logout } = useAuth();
   const { addToast } = useToast();
 
@@ -103,70 +101,78 @@ export default function Admin() {
   }
 
   const statusColors: Record<string, string> = {
-    pending: 'bg-yellow-100 text-yellow-800',
-    confirmed: 'bg-green-100 text-green-800',
-    cancelled: 'bg-red-100 text-red-800',
+    pending: 'bg-yellow-500/10 text-yellow-400 border border-yellow-500/20',
+    confirmed: 'bg-green-500/10 text-green-400 border border-green-500/20',
+    cancelled: 'bg-red-500/10 text-red-400 border border-red-500/20',
   };
 
+  const statusLabels: Record<string, string> = {
+    pending: 'Pendente',
+    confirmed: 'Confirmada',
+    cancelled: 'Cancelada',
+  };
+
+  const inputClasses = "w-full px-3 py-2 rounded-lg border border-white/10 bg-white/5 text-white text-sm focus:border-[#e2ff00]/50 focus:ring-1 focus:ring-[#e2ff00]/30 outline-none";
+
   return (
-    <main className="page-enter py-20 md:py-24 bg-stone-50 min-h-screen">
+    <main className="page-enter py-20 md:py-24 bg-[#0a0a0a] min-h-screen">
       <div className="max-w-6xl mx-auto px-4 sm:px-6">
         {/* Header */}
         <div className="flex items-center justify-between mb-12">
           <div>
-            <span className="text-xs uppercase tracking-[0.2em] text-amber-600 font-medium block mb-2">Dashboard</span>
-            <h1 className="font-serif text-3xl sm:text-4xl font-bold text-stone-900">
-              {t('admin.title')}
+            <span className="text-xs uppercase tracking-[0.2em] text-[#e2ff00]/60 font-medium block mb-2">Dashboard</span>
+            <h1 className="font-display text-3xl sm:text-4xl font-bold text-white">
+              Painel de Administração
             </h1>
           </div>
           <button
             onClick={logout}
-            className="px-5 py-2.5 text-sm bg-white hover:bg-stone-100 text-stone-600 rounded-xl transition-all duration-300 border border-stone-200 shadow-sm"
+            className="px-5 py-2.5 text-sm bg-white/5 hover:bg-white/10 text-white/60 rounded-xl transition-all duration-300 border border-white/10"
           >
-            {t('admin.logout')}
+            Sair
           </button>
         </div>
 
         {/* === Bookings === */}
         <section className="mb-16">
-          <h2 className="font-serif text-2xl font-bold text-stone-900 mb-6">{t('admin.bookings_title')}</h2>
+          <h2 className="font-display text-2xl font-bold text-white mb-6">Agendamentos</h2>
 
           {loadingBookings ? (
             <div className="space-y-3">
               {[1, 2, 3].map((i) => <div key={i} className="skeleton h-20 w-full rounded-xl" />)}
             </div>
           ) : bookings.length === 0 ? (
-            <p className="text-stone-500">{t('admin.no_bookings')}</p>
+            <p className="text-white/40">Sem agendamentos.</p>
           ) : (
             <div className="space-y-4">
               {bookings.map((b) => (
-                <div key={b.id} className="card-hover bg-white rounded-2xl border border-stone-100 shadow-sm p-6">
+                <div key={b.id} className="card-hover bg-[#111] rounded-2xl border border-white/5 p-6">
                   <div className="flex flex-wrap items-start justify-between gap-4">
                     <div className="space-y-1">
                       <div className="flex items-center gap-3">
-                        <h3 className="font-semibold text-stone-900">{b.name}</h3>
-                        <span className={`px-2 py-0.5 text-xs font-medium rounded-full ${statusColors[b.status]}`}>
-                          {t(`reservations.status_${b.status}`)}
+                        <h3 className="font-semibold text-white">{b.name}</h3>
+                        <span className={`px-2.5 py-0.5 text-xs font-medium rounded-full ${statusColors[b.status]}`}>
+                          {statusLabels[b.status]}
                         </span>
                       </div>
-                      <p className="text-sm text-stone-500">
-                        {b.check_in} → {b.check_out} · {b.guests} hóspedes
+                      <p className="text-sm text-white/40">
+                        {b.check_in} → {b.check_out} · {b.guests} pessoa(s)
                       </p>
-                      <p className="text-sm text-stone-500">{b.email} · {b.phone}</p>
-                      {b.notes && <p className="text-sm text-stone-400 italic">{b.notes}</p>}
+                      <p className="text-sm text-white/40">{b.email} · {b.phone}</p>
+                      {b.notes && <p className="text-sm text-white/25 italic">{b.notes}</p>}
                     </div>
 
                     <div className="flex items-center gap-2">
-                      <label htmlFor={`status-${b.id}`} className="sr-only">{t('admin.status_change')}</label>
+                      <label htmlFor={`status-${b.id}`} className="sr-only">Alterar estado</label>
                       <select
                         id={`status-${b.id}`}
                         value={b.status}
                         onChange={(e) => handleStatusChange(b.id, e.target.value)}
-                        className="px-3 py-1.5 text-sm border border-stone-300 rounded-lg focus:border-amber-500 focus:ring-1 focus:ring-amber-500"
+                        className="px-3 py-1.5 text-sm border border-white/10 bg-white/5 text-white rounded-lg focus:border-[#e2ff00]/50 focus:ring-1 focus:ring-[#e2ff00]/30 outline-none"
                       >
-                        <option value="pending">{t('reservations.status_pending')}</option>
-                        <option value="confirmed">{t('reservations.status_confirmed')}</option>
-                        <option value="cancelled">{t('reservations.status_cancelled')}</option>
+                        <option value="pending">Pendente</option>
+                        <option value="confirmed">Confirmada</option>
+                        <option value="cancelled">Cancelada</option>
                       </select>
                     </div>
                   </div>
@@ -178,56 +184,50 @@ export default function Admin() {
 
         {/* === Blackouts === */}
         <section>
-          <h2 className="font-serif text-2xl font-bold text-stone-900 mb-6">{t('admin.blackouts_title')}</h2>
+          <h2 className="font-display text-2xl font-bold text-white mb-6">Datas Bloqueadas</h2>
 
           {/* Add blackout form */}
-          <form onSubmit={handleAddBlackout} className="bg-white rounded-2xl border border-stone-100 shadow-sm p-6 mb-8">
-            <h3 className="font-semibold text-stone-800 mb-4">{t('admin.add_blackout')}</h3>
+          <form onSubmit={handleAddBlackout} className="bg-[#111] rounded-2xl border border-white/5 p-6 mb-8">
+            <h3 className="font-semibold text-white mb-4">Bloquear datas</h3>
             <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
               <div>
-                <label htmlFor="bl-from" className="block text-sm font-medium text-stone-700 mb-1">
-                  {t('admin.date_from')}
-                </label>
+                <label htmlFor="bl-from" className="block text-sm font-medium text-white/50 mb-1">De</label>
                 <input
                   id="bl-from"
                   type="date"
                   value={blDateFrom}
                   onChange={(e) => setBlDateFrom(e.target.value)}
                   required
-                  className="w-full px-3 py-2 rounded-lg border border-stone-300 text-sm focus:border-amber-500 focus:ring-1 focus:ring-amber-500"
+                  className={inputClasses}
                 />
               </div>
               <div>
-                <label htmlFor="bl-to" className="block text-sm font-medium text-stone-700 mb-1">
-                  {t('admin.date_to')}
-                </label>
+                <label htmlFor="bl-to" className="block text-sm font-medium text-white/50 mb-1">Até</label>
                 <input
                   id="bl-to"
                   type="date"
                   value={blDateTo}
                   onChange={(e) => setBlDateTo(e.target.value)}
                   required
-                  className="w-full px-3 py-2 rounded-lg border border-stone-300 text-sm focus:border-amber-500 focus:ring-1 focus:ring-amber-500"
+                  className={inputClasses}
                 />
               </div>
               <div>
-                <label htmlFor="bl-reason" className="block text-sm font-medium text-stone-700 mb-1">
-                  {t('admin.reason')}
-                </label>
+                <label htmlFor="bl-reason" className="block text-sm font-medium text-white/50 mb-1">Motivo</label>
                 <input
                   id="bl-reason"
                   type="text"
                   value={blReason}
                   onChange={(e) => setBlReason(e.target.value)}
-                  className="w-full px-3 py-2 rounded-lg border border-stone-300 text-sm focus:border-amber-500 focus:ring-1 focus:ring-amber-500"
+                  className={inputClasses}
                 />
               </div>
             </div>
             <button
               type="submit"
-              className="mt-5 bg-stone-900 hover:bg-stone-800 text-white font-medium px-8 py-2.5 rounded-xl transition-all duration-300 text-sm tracking-wide"
+              className="mt-5 bg-[#e2ff00] hover:bg-[#d4ef00] text-black font-semibold px-8 py-2.5 rounded-xl transition-all duration-300 text-sm tracking-wide"
             >
-              {t('admin.save')}
+              Guardar
             </button>
           </form>
 
@@ -237,22 +237,22 @@ export default function Admin() {
               {[1, 2].map((i) => <div key={i} className="skeleton h-16 w-full rounded-xl" />)}
             </div>
           ) : blackouts.length === 0 ? (
-            <p className="text-stone-500">{t('admin.no_blackouts')}</p>
+            <p className="text-white/40">Sem datas bloqueadas.</p>
           ) : (
             <div className="space-y-3">
               {blackouts.map((bl) => (
-                <div key={bl.id} className="card-hover bg-white rounded-2xl border border-stone-100 shadow-sm p-5 flex items-center justify-between">
+                <div key={bl.id} className="card-hover bg-[#111] rounded-2xl border border-white/5 p-5 flex items-center justify-between">
                   <div>
-                    <p className="font-medium text-stone-800">
+                    <p className="font-medium text-white">
                       {bl.date_from} → {bl.date_to}
                     </p>
-                    {bl.reason && <p className="text-sm text-stone-500">{bl.reason}</p>}
+                    {bl.reason && <p className="text-sm text-white/40">{bl.reason}</p>}
                   </div>
                   <button
                     onClick={() => handleDeleteBlackout(bl.id)}
-                    className="px-3 py-1.5 text-sm text-red-600 hover:bg-red-50 rounded-lg transition-colors"
+                    className="px-3 py-1.5 text-sm text-red-400 hover:bg-red-500/10 rounded-lg transition-colors"
                   >
-                    {t('admin.delete')}
+                    Remover
                   </button>
                 </div>
               ))}

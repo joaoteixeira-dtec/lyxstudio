@@ -1,194 +1,179 @@
-import { useTranslation } from 'react-i18next';
 import { Link } from 'react-router-dom';
 import Hero from '../components/Hero';
 import AnimateOnScroll from '../components/AnimateOnScroll';
 
-const ASSET_BASE = '/assets';
-
-const serviceIcons: Record<string, string> = {
-  breakfast: '🍳',
-  wifi: '📶',
-  pool: '🏊',
-  parking: '🅿️',
-  accessibility: '♿',
-  gardens: '🌿',
-  shop: '🛍️',
-  cleaning: '🧹',
-  tourism: '🗺️',
-};
-
-const serviceKeys = Object.keys(serviceIcons);
-
-const previewImages = [
-  `${ASSET_BASE}/images/exterior/exterior-01.jpg`,
-  `${ASSET_BASE}/images/exterior/exterior-03.jpg`,
-  `${ASSET_BASE}/images/interior/interior-01.jpg`,
-  `${ASSET_BASE}/images/interior/interior-03.jpg`,
-  `${ASSET_BASE}/images/exterior/exterior-05.jpg`,
-  `${ASSET_BASE}/images/interior/interior-14.jpg`,
+const studios = [
+  {
+    id: 'studio-a',
+    name: 'Studio A',
+    subtitle: 'Gravação',
+    description: 'Sala principal de gravação profissional com tratamento acústico premium e equipamento de alta qualidade.',
+    features: ['Tratamento acústico', 'Microfones pro', 'Isolamento total'],
+    price: '25€/h',
+    accent: '#e2ff00',
+  },
+  {
+    id: 'studio-b',
+    name: 'Studio B',
+    subtitle: 'Produção',
+    description: 'Estúdio de produção e mixing equipado com monitores de referência e workstation completa.',
+    features: ['Monitores referência', 'DAW completo', 'Plugins premium'],
+    price: '20€/h',
+    accent: '#e2ff00',
+  },
+  {
+    id: 'studio-c',
+    name: 'Studio C',
+    subtitle: 'Ensaio',
+    description: 'Sala de ensaio ampla com backline incluído, perfeita para bandas e sessões em grupo.',
+    features: ['Backline incluído', 'PA system', 'Espaço amplo'],
+    price: '15€/h',
+    accent: '#e2ff00',
+  },
 ];
 
 export default function Home() {
-  const { t } = useTranslation();
-
   return (
     <main className="page-enter">
       {/* Hero */}
-      <Hero
-        videoSrc={`${ASSET_BASE}/video/hero-video.mp4`}
-        fallbackImage={`${ASSET_BASE}/images/exterior/exterior-01.jpg`}
-      />
+      <Hero />
 
-      {/* Concept Section */}
-      <section id="concept-section" className="py-24 md:py-32 bg-white relative overflow-hidden">
-        {/* Decorative accent */}
-        <div className="absolute top-0 left-1/2 -translate-x-1/2 w-px h-20 bg-gradient-to-b from-transparent to-amber-300/40" />
+      {/* Studios Section */}
+      <section className="py-24 md:py-32 bg-[#0a0a0a] relative">
+        {/* Background glow */}
+        <div className="absolute top-0 left-0 right-0 accent-line" />
+
+        <div className="max-w-6xl mx-auto px-4 sm:px-6">
+          <AnimateOnScroll animation="fade-up">
+            <div className="text-center mb-20">
+              <span className="inline-block text-xs uppercase tracking-[0.4em] text-[#e2ff00]/60 font-medium mb-4">
+                Os Nossos Espaços
+              </span>
+              <h2 className="font-display text-4xl sm:text-5xl md:text-6xl font-bold text-white tracking-tight">
+                Três Studios.<br />
+                <span className="text-white/30">Um standard.</span>
+              </h2>
+            </div>
+          </AnimateOnScroll>
+
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+            {studios.map((studio, i) => (
+              <AnimateOnScroll key={studio.id} animation="fade-up" delay={i * 150}>
+                <div className="studio-card group bg-[#111] rounded-2xl border border-white/5 p-8 h-full flex flex-col">
+                  {/* Studio letter */}
+                  <div className="mb-6">
+                    <span className="text-6xl font-display font-bold text-white/[0.03] group-hover:text-[#e2ff00]/10 transition-colors duration-500 block leading-none">
+                      {studio.name.split(' ')[1]}
+                    </span>
+                  </div>
+
+                  {/* Info */}
+                  <div className="flex-1">
+                    <span className="text-[10px] uppercase tracking-[0.3em] text-[#e2ff00]/60 font-medium">
+                      {studio.subtitle}
+                    </span>
+                    <h3 className="font-display text-2xl font-bold text-white mt-1 mb-3">
+                      {studio.name}
+                    </h3>
+                    <p className="text-white/40 text-sm leading-relaxed mb-6">
+                      {studio.description}
+                    </p>
+
+                    {/* Features */}
+                    <ul className="space-y-2 mb-8">
+                      {studio.features.map((f) => (
+                        <li key={f} className="flex items-center gap-2 text-sm text-white/50">
+                          <span className="w-1 h-1 rounded-full bg-[#e2ff00]" />
+                          {f}
+                        </li>
+                      ))}
+                    </ul>
+                  </div>
+
+                  {/* Price + CTA */}
+                  <div className="flex items-center justify-between pt-6 border-t border-white/5">
+                    <span className="text-2xl font-display font-bold text-white">
+                      {studio.price}
+                    </span>
+                    <Link
+                      to="/reservas"
+                      className="text-xs uppercase tracking-wider text-[#e2ff00]/70 hover:text-[#e2ff00] transition-colors font-medium"
+                    >
+                      Agendar →
+                    </Link>
+                  </div>
+                </div>
+              </AnimateOnScroll>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* Features / Why Section */}
+      <section className="py-24 md:py-32 bg-[#080808] relative overflow-hidden">
+        <div className="absolute inset-0">
+          <div className="absolute top-1/2 right-0 w-[500px] h-[500px] bg-[#e2ff00]/[0.02] rounded-full blur-[100px] translate-x-1/2" />
+        </div>
+
+        <div className="max-w-5xl mx-auto px-4 sm:px-6 relative z-10">
+          <AnimateOnScroll animation="fade-up">
+            <div className="text-center mb-16">
+              <span className="inline-block text-xs uppercase tracking-[0.4em] text-[#e2ff00]/60 font-medium mb-4">
+                Porquê LYX Studio
+              </span>
+              <h2 className="font-display text-3xl sm:text-4xl md:text-5xl font-bold text-white tracking-tight">
+                Feito para criar.<br />
+                <span className="text-white/30">Sem compromissos.</span>
+              </h2>
+            </div>
+          </AnimateOnScroll>
+
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
+            {[
+              { icon: '🎛️', title: 'Equipamento Pro', desc: 'Microfones, pré-amps e monitores de nível profissional em todas as salas.' },
+              { icon: '🔇', title: 'Isolamento Total', desc: 'Tratamento acústico profissional para um som limpo sem interferências.' },
+              { icon: '⚡', title: 'Reserva Rápida', desc: 'Agenda online em tempo real. Escolhe a sala, o horário e confirma em segundos.' },
+              { icon: '🕐', title: 'Horário Flexível', desc: 'Disponibilidade alargada, incluindo fins de semana e horários noturnos.' },
+            ].map((item, i) => (
+              <AnimateOnScroll key={i} animation="fade-up" delay={i * 100}>
+                <div className="card-hover flex gap-5 bg-[#111] rounded-xl border border-white/5 p-6 group cursor-default">
+                  <span className="text-3xl flex-shrink-0 group-hover:scale-110 transition-transform duration-300" aria-hidden="true">
+                    {item.icon}
+                  </span>
+                  <div>
+                    <h3 className="font-display font-semibold text-white mb-1">{item.title}</h3>
+                    <p className="text-white/40 text-sm leading-relaxed">{item.desc}</p>
+                  </div>
+                </div>
+              </AnimateOnScroll>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* CTA Section */}
+      <section className="py-24 md:py-32 bg-[#0a0a0a] relative">
+        <div className="accent-line w-full absolute top-0" />
         <div className="max-w-3xl mx-auto px-4 sm:px-6 text-center">
           <AnimateOnScroll animation="fade-up">
-            <span className="inline-block text-xs uppercase tracking-[0.3em] text-amber-600 font-medium mb-4">
-              {t('hero.location')}
-            </span>
-          </AnimateOnScroll>
-          <AnimateOnScroll animation="fade-up" delay={100}>
-            <h2 className="font-serif text-3xl sm:text-4xl md:text-5xl font-bold text-stone-900 mb-8 leading-tight">
-              {t('home.concept_title')}
+            <h2 className="font-display text-3xl sm:text-4xl md:text-5xl font-bold text-white tracking-tight mb-6">
+              Pronto para gravar?
             </h2>
-          </AnimateOnScroll>
-          <AnimateOnScroll animation="fade-up" delay={200}>
-            <p className="text-lg md:text-xl text-stone-500 leading-relaxed font-light">
-              {t('home.concept_text')}
+            <p className="text-white/40 text-lg mb-10 font-light">
+              Escolhe o teu estúdio e reserva a tua sessão em poucos cliques.
             </p>
+            <Link
+              to="/reservas"
+              className="btn-magnetic inline-flex items-center gap-3 bg-[#e2ff00] text-black font-semibold py-4 px-12 rounded-lg text-sm tracking-wider uppercase transition-all duration-500"
+            >
+              Ver Disponibilidade
+              <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 8l4 4m0 0l-4 4m4-4H3" />
+              </svg>
+            </Link>
           </AnimateOnScroll>
         </div>
       </section>
-
-      {/* Parallax divider image */}
-      <div className="parallax-section h-[40vh] md:h-[50vh]">
-        <img
-          src={`${ASSET_BASE}/images/exterior/exterior-07.jpg`}
-          alt=""
-          className="parallax-bg"
-          loading="lazy"
-        />
-        <div className="absolute inset-0 bg-black/30" />
-      </div>
-
-      {/* Services Section */}
-      <section className="py-24 md:py-32 bg-stone-50 relative">
-        <div className="max-w-6xl mx-auto px-4 sm:px-6">
-          <AnimateOnScroll animation="fade-up">
-            <div className="text-center mb-16">
-              <span className="inline-block text-xs uppercase tracking-[0.3em] text-amber-600 font-medium mb-3">
-                Amenities
-              </span>
-              <h2 className="font-serif text-3xl sm:text-4xl md:text-5xl font-bold text-stone-900">
-                {t('home.services_title')}
-              </h2>
-            </div>
-          </AnimateOnScroll>
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5 stagger-children">
-            {serviceKeys.map((key, i) => (
-              <AnimateOnScroll key={key} animation="fade-up" delay={i * 80}>
-                <div className="card-hover bg-white rounded-2xl p-7 shadow-sm border border-stone-100/80 group cursor-default">
-                  <span className="text-3xl mb-4 block transition-transform duration-300 group-hover:scale-110" aria-hidden="true">
-                    {serviceIcons[key]}
-                  </span>
-                  <p className="text-stone-600 text-sm leading-relaxed">{t(`services.${key}`)}</p>
-                </div>
-              </AnimateOnScroll>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* Gallery Preview */}
-      <section className="py-24 md:py-32 bg-white">
-        <div className="max-w-6xl mx-auto px-4 sm:px-6">
-          <AnimateOnScroll animation="fade-up">
-            <div className="text-center mb-16">
-              <span className="inline-block text-xs uppercase tracking-[0.3em] text-amber-600 font-medium mb-3">
-                Gallery
-              </span>
-              <h2 className="font-serif text-3xl sm:text-4xl md:text-5xl font-bold text-stone-900 mb-4">
-                {t('home.gallery_title')}
-              </h2>
-              <p className="text-stone-400 font-light">{t('home.gallery_subtitle')}</p>
-            </div>
-          </AnimateOnScroll>
-          <div className="grid grid-cols-2 md:grid-cols-3 gap-3 md:gap-4">
-            {previewImages.map((src, i) => (
-              <AnimateOnScroll key={i} animation="zoom-in" delay={i * 100}>
-                <div className="aspect-[4/3] rounded-2xl overflow-hidden img-zoom shadow-sm">
-                  <img
-                    src={src}
-                    alt={`Casa do Posto das Marés ${i + 1}`}
-                    className="w-full h-full object-cover"
-                    loading="lazy"
-                  />
-                </div>
-              </AnimateOnScroll>
-            ))}
-          </div>
-          <AnimateOnScroll animation="fade-up" delay={200}>
-            <div className="text-center mt-12">
-              <Link
-                to="/galeria"
-                className="btn-magnetic group inline-flex items-center gap-3 border border-stone-300 text-stone-700 hover:border-stone-900 hover:text-stone-900 font-medium py-3 px-8 rounded-full text-sm tracking-wider uppercase transition-all duration-400"
-              >
-                {t('home.view_all')}
-                <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4 transition-transform duration-300 group-hover:translate-x-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M17 8l4 4m0 0l-4 4m4-4H3" />
-                </svg>
-              </Link>
-            </div>
-          </AnimateOnScroll>
-        </div>
-      </section>
-
-      {/* Parallax divider image */}
-      <div className="parallax-section h-[35vh] md:h-[45vh]">
-        <img
-          src={`${ASSET_BASE}/images/interior/interior-07.jpg`}
-          alt=""
-          className="parallax-bg"
-          loading="lazy"
-        />
-        <div className="absolute inset-0 bg-black/30" />
-      </div>
-
-      {/* Location Section */}
-      <section className="py-24 md:py-32 bg-stone-50">
-        <div className="max-w-4xl mx-auto px-4 sm:px-6 text-center">
-          <AnimateOnScroll animation="fade-up">
-            <span className="inline-block text-xs uppercase tracking-[0.3em] text-amber-600 font-medium mb-3">
-              Location
-            </span>
-            <h2 className="font-serif text-3xl sm:text-4xl md:text-5xl font-bold text-stone-900 mb-4">
-              {t('home.location_title')}
-            </h2>
-          </AnimateOnScroll>
-          <AnimateOnScroll animation="fade-up" delay={100}>
-            <p className="text-stone-500 mb-10 font-light">Beco Vasco da Gama, nº 1, 8800-595 Cabanas de Tavira</p>
-          </AnimateOnScroll>
-          <AnimateOnScroll animation="zoom-in" delay={200}>
-            <div className="aspect-video rounded-2xl overflow-hidden shadow-lg border border-stone-200/50">
-              <iframe
-                title="Localização Casa do Posto das Marés"
-                src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3190.5!2d-7.5983!3d37.1275!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x0%3A0x0!2zMzfCsDA3JzM5LjAiTiA3wrAzNSc1My45Ilc!5e0!3m2!1spt-PT!2spt!4v1"
-                width="100%"
-                height="100%"
-                style={{ border: 0 }}
-                allowFullScreen
-                loading="lazy"
-                referrerPolicy="no-referrer-when-downgrade"
-              />
-            </div>
-          </AnimateOnScroll>
-        </div>
-      </section>
-
-      {/* Section divider */}
-      <div className="section-divider" />
     </main>
   );
 }

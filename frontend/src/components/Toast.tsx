@@ -48,7 +48,7 @@ function ToastItem({ toast, onClose }: { toast: Toast; onClose: () => void }) {
   const colors = {
     success: 'bg-green-600 text-white',
     error: 'bg-red-600 text-white',
-    info: 'bg-stone-800 text-white',
+    info: 'bg-[#1a1a1a] text-white border border-white/10',
   };
 
   return (

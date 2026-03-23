@@ -4,7 +4,7 @@ export default function SkeletonLoader({ className = '' }: { className?: string 
 
 export function SkeletonCard() {
   return (
-    <div className="bg-white rounded-xl shadow-sm overflow-hidden">
+    <div className="bg-[#111] rounded-xl border border-white/5 overflow-hidden">
       <div className="skeleton h-48 w-full" />
       <div className="p-4 space-y-2">
         <div className="skeleton h-4 w-3/4" />

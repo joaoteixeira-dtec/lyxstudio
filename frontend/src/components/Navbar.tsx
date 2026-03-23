@@ -1,23 +1,14 @@
 import { useState } from 'react';
 import { Link, useLocation } from 'react-router-dom';
-import { useTranslation } from 'react-i18next';
 import { useScrollDirection } from '../hooks/useScrollAnimation';
-import LanguageSwitcher from './LanguageSwitcher';
 
 const navItems = [
-  { path: '/', key: 'nav.home' },
-  { path: '/alojamento', key: 'nav.accommodation' },
-  { path: '/galeria', key: 'nav.gallery' },
-  { path: '/historia', key: 'nav.history' },
-  { path: '/sustentabilidade', key: 'nav.sustainability' },
-  { path: '/reservas', key: 'nav.reservations' },
-  { path: '/contactos', key: 'nav.contact' },
+  { path: '/', label: 'Início' },
+  { path: '/reservas', label: 'Agendar' },
+  { path: '/contactos', label: 'Contacto' },
 ];
 
-const ASSET_BASE = '/assets';
-
 export default function Navbar() {
-  const { t } = useTranslation();
   const location = useLocation();
   const { scrolled, hidden } = useScrollDirection();
   const [mobileOpen, setMobileOpen] = useState(false);
@@ -33,55 +24,56 @@ export default function Navbar() {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className={`flex items-center justify-between transition-all duration-300 ${scrolled ? 'h-16' : 'h-20'}`}>
           {/* Logo */}
-          <Link to="/" className="flex items-center gap-2.5 group">
-            <img
-              src={`${ASSET_BASE}/revive-logo.jpeg`}
-              alt="Revive Natureza"
-              className={`rounded transition-all duration-300 ${scrolled ? 'h-8' : 'h-10'}`}
-            />
-            <span className="flex flex-col leading-tight">
-              <span className={`font-serif font-bold tracking-wide transition-all duration-300 ${
-                scrolled ? 'text-sm' : 'text-base'
-              } ${scrolled ? 'text-stone-900' : 'text-white'}`}>
-                <span className="text-amber-500 group-hover:text-amber-400 transition-colors">POSTO DAS MARÉS</span>
+          <Link to="/" className="flex items-center gap-3 group">
+            <div className="flex items-center gap-0.5">
+              <span className={`font-display font-bold tracking-tight transition-all duration-300 ${
+                scrolled ? 'text-lg' : 'text-xl'
+              } text-white`}>
+                LYX
               </span>
-              <span className={`text-[10px] tracking-wider font-light transition-all duration-300 ${scrolled ? 'text-stone-400' : 'text-white/50'}`}>by Vanguard Ceremony</span>
-            </span>
+              <span className={`font-display font-bold tracking-tight transition-all duration-300 ${
+                scrolled ? 'text-lg' : 'text-xl'
+              } text-[#e2ff00]`}>
+                STUDIO
+              </span>
+            </div>
           </Link>
 
           {/* Desktop nav */}
-          <div className="hidden md:flex items-center gap-0.5">
+          <div className="hidden md:flex items-center gap-1">
             {navItems.map((item) => (
               <Link
                 key={item.path}
                 to={item.path}
-                className={`relative px-3 py-2 text-sm font-medium transition-all duration-300 rounded-md group ${
+                className={`relative px-4 py-2 text-sm font-medium transition-all duration-300 rounded-lg group ${
                   location.pathname === item.path
-                    ? scrolled ? 'text-amber-700' : 'text-amber-300'
-                    : scrolled ? 'text-stone-600 hover:text-stone-900' : 'text-white/80 hover:text-white'
+                    ? 'text-[#e2ff00]'
+                    : 'text-white/60 hover:text-white'
                 }`}
               >
-                {t(item.key)}
-                {/* Active underline indicator */}
-                <span className={`absolute bottom-0.5 left-3 right-3 h-0.5 rounded-full transition-all duration-300 ${
+                {item.label}
+                <span className={`absolute bottom-0.5 left-4 right-4 h-[2px] rounded-full transition-all duration-300 ${
                   location.pathname === item.path
-                    ? 'bg-amber-500 scale-x-100'
-                    : 'bg-amber-500/50 scale-x-0 group-hover:scale-x-100'
+                    ? 'bg-[#e2ff00] scale-x-100'
+                    : 'bg-[#e2ff00]/50 scale-x-0 group-hover:scale-x-100'
                 }`} />
               </Link>
             ))}
           </div>
 
-          {/* Right side — language dropdown */}
-          <div className="hidden md:flex items-center">
-            <LanguageSwitcher scrolled={scrolled} />
+          {/* CTA */}
+          <div className="hidden md:block">
+            <Link
+              to="/reservas"
+              className="px-5 py-2 text-sm font-semibold bg-[#e2ff00] text-black rounded-lg hover:bg-[#d4ef00] transition-all duration-300"
+            >
+              Agendar Sessão
+            </Link>
           </div>
 
           {/* Mobile hamburger */}
           <button
-            className={`md:hidden p-2 rounded-full transition-colors ${
-              scrolled ? 'text-stone-600 hover:bg-stone-100' : 'text-white hover:bg-white/10'
-            }`}
+            className="md:hidden p-2 rounded-lg text-white/70 hover:bg-white/10 transition-colors"
             onClick={() => setMobileOpen(!mobileOpen)}
             aria-label="Toggle menu"
             aria-expanded={mobileOpen}
@@ -99,25 +91,29 @@ export default function Navbar() {
 
       {/* Mobile menu */}
       {mobileOpen && (
-        <div className="md:hidden bg-white/98 backdrop-blur-xl border-t border-stone-200 shadow-xl animate-[fadeIn_0.2s_ease-out]">
+        <div className="md:hidden bg-[#0a0a0a]/98 backdrop-blur-xl border-t border-white/5 shadow-xl animate-[fadeIn_0.2s_ease-out]">
           <div className="px-4 py-3 space-y-1">
             {navItems.map((item) => (
               <Link
                 key={item.path}
                 to={item.path}
                 onClick={() => setMobileOpen(false)}
-                className={`block px-4 py-2.5 rounded-lg text-base font-medium transition-all ${
+                className={`block px-4 py-3 rounded-lg text-base font-medium transition-all ${
                   location.pathname === item.path
-                    ? 'bg-amber-50 text-amber-800'
-                    : 'text-stone-600 hover:bg-stone-50'
+                    ? 'bg-[#e2ff00]/10 text-[#e2ff00]'
+                    : 'text-white/60 hover:bg-white/5 hover:text-white'
                 }`}
               >
-                {t(item.key)}
+                {item.label}
               </Link>
             ))}
-          </div>
-          <div className="px-4 py-3 border-t border-stone-100">
-            <LanguageSwitcher variant="mobile" />
+            <Link
+              to="/reservas"
+              onClick={() => setMobileOpen(false)}
+              className="block px-4 py-3 mt-2 rounded-lg text-base font-semibold bg-[#e2ff00] text-black text-center"
+            >
+              Agendar Sessão
+            </Link>
           </div>
         </div>
       )}
