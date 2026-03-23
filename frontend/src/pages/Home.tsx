@@ -2,109 +2,83 @@ import { Link } from 'react-router-dom';
 import Hero from '../components/Hero';
 import AnimateOnScroll from '../components/AnimateOnScroll';
 
-const studios = [
-  {
-    id: 'studio-a',
-    name: 'Studio A',
-    subtitle: 'Gravação',
-    description: 'Sala principal de gravação profissional com tratamento acústico premium e equipamento de alta qualidade.',
-    features: ['Tratamento acústico', 'Microfones pro', 'Isolamento total'],
-    price: '25€/h',
-    accent: '#e2ff00',
-  },
-  {
-    id: 'studio-b',
-    name: 'Studio B',
-    subtitle: 'Produção',
-    description: 'Estúdio de produção e mixing equipado com monitores de referência e workstation completa.',
-    features: ['Monitores referência', 'DAW completo', 'Plugins premium'],
-    price: '20€/h',
-    accent: '#e2ff00',
-  },
-  {
-    id: 'studio-c',
-    name: 'Studio C',
-    subtitle: 'Ensaio',
-    description: 'Sala de ensaio ampla com backline incluído, perfeita para bandas e sessões em grupo.',
-    features: ['Backline incluído', 'PA system', 'Espaço amplo'],
-    price: '15€/h',
-    accent: '#e2ff00',
-  },
-];
-
 export default function Home() {
   return (
     <main className="page-enter">
       {/* Hero */}
       <Hero />
 
-      {/* Studios Section */}
+      {/* Section 2 — Reserva. Vive. */}
       <section className="py-24 md:py-32 bg-[#0a0a0a] relative">
-        {/* Background glow */}
-        <div className="absolute top-0 left-0 right-0 accent-line" />
+        <div className="max-w-7xl mx-auto px-6 sm:px-10">
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 lg:gap-20 items-start">
 
-        <div className="max-w-6xl mx-auto px-4 sm:px-6">
-          <AnimateOnScroll animation="fade-up">
-            <div className="text-center mb-20">
-              <span className="inline-block text-xs uppercase tracking-[0.4em] text-[#e2ff00]/60 font-medium mb-4">
-                Os Nossos Espaços
-              </span>
-              <h2 className="font-display text-4xl sm:text-5xl md:text-6xl font-bold text-white tracking-tight">
-                Três Studios.<br />
-                <span className="text-white/30">Um standard.</span>
-              </h2>
-            </div>
-          </AnimateOnScroll>
+            {/* Left column — Text */}
+            <div>
+              <AnimateOnScroll animation="fade-up">
+                <div className="flex items-center gap-3 mb-8">
+                  <span className="w-2 h-2 rounded-full bg-white" />
+                  <span className="text-sm text-white/80 tracking-wide">LYX Studios</span>
+                </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-            {studios.map((studio, i) => (
-              <AnimateOnScroll key={studio.id} animation="fade-up" delay={i * 150}>
-                <div className="studio-card group bg-[#111] rounded-2xl border border-white/5 p-8 h-full flex flex-col">
-                  {/* Studio letter */}
-                  <div className="mb-6">
-                    <span className="text-6xl font-display font-bold text-white/[0.03] group-hover:text-[#e2ff00]/10 transition-colors duration-500 block leading-none">
-                      {studio.name.split(' ')[1]}
-                    </span>
-                  </div>
+                <h2 className="font-display text-4xl sm:text-5xl md:text-6xl font-bold text-white leading-tight tracking-tight mb-16">
+                  Reserva. Vive.<br />
+                  Sem perguntas.
+                </h2>
+              </AnimateOnScroll>
 
-                  {/* Info */}
-                  <div className="flex-1">
-                    <span className="text-[10px] uppercase tracking-[0.3em] text-[#e2ff00]/60 font-medium">
-                      {studio.subtitle}
-                    </span>
-                    <h3 className="font-display text-2xl font-bold text-white mt-1 mb-3">
-                      {studio.name}
-                    </h3>
-                    <p className="text-white/40 text-sm leading-relaxed mb-6">
-                      {studio.description}
-                    </p>
-
-                    {/* Features */}
-                    <ul className="space-y-2 mb-8">
-                      {studio.features.map((f) => (
-                        <li key={f} className="flex items-center gap-2 text-sm text-white/50">
-                          <span className="w-1 h-1 rounded-full bg-[#e2ff00]" />
-                          {f}
-                        </li>
-                      ))}
-                    </ul>
-                  </div>
-
-                  {/* Price + CTA */}
-                  <div className="flex items-center justify-between pt-6 border-t border-white/5">
-                    <span className="text-2xl font-display font-bold text-white">
-                      {studio.price}
-                    </span>
-                    <Link
-                      to="/reservas"
-                      className="text-xs uppercase tracking-wider text-[#e2ff00]/70 hover:text-[#e2ff00] transition-colors font-medium"
-                    >
-                      Agendar →
-                    </Link>
-                  </div>
+              <AnimateOnScroll animation="fade-up" delay={100}>
+                <div className="mb-12">
+                  <h3 className="text-xl sm:text-2xl font-bold text-white mb-4">
+                    Privado, higienizado, insonorizado
+                  </h3>
+                  <p className="text-white/40 text-base leading-relaxed max-w-lg">
+                    Do suave ao intenso, os nossos studios proporcionam um cenário seguro e estético para explorar. Discreto, higienizado e fácil de usar, da entrada à saída.
+                  </p>
                 </div>
               </AnimateOnScroll>
-            ))}
+
+              <AnimateOnScroll animation="fade-up" delay={200}>
+                <div>
+                  <h3 className="text-xl sm:text-2xl font-bold text-white mb-4">
+                    Marcação rápida, acesso discreto, pagamento simples.
+                  </h3>
+                  <p className="text-white/40 text-base leading-relaxed max-w-lg">
+                    Três salas, três intensidades. Marca em minutos, recebe o acesso no teu email e vive a experiência num espaço pensado ao detalhe
+                  </p>
+                </div>
+              </AnimateOnScroll>
+            </div>
+
+            {/* Right column — Image + Card */}
+            <div className="relative">
+              <AnimateOnScroll animation="fade-up" delay={150}>
+                <div className="rounded-2xl overflow-hidden">
+                  <img
+                    src="/bed.avif"
+                    alt="Suite LYX Studios"
+                    className="w-full h-[500px] lg:h-[600px] object-cover"
+                  />
+                </div>
+
+                {/* Como Agendar card */}
+                <div className="bg-white text-black rounded-2xl p-8 mt-[-80px] mx-4 sm:mx-8 relative z-10 shadow-2xl">
+                  <h4 className="text-xl font-bold text-center mb-4 uppercase tracking-wide">
+                    Como Agendar
+                  </h4>
+                  <p className="text-center text-sm text-black/70 leading-relaxed mb-6">
+                    Escolhe a sala e a duração. Marca no calendário e confirma o pagamento. Recebe o código de acesso seguro por email. Entra, usa e sai. A limpeza é imediata após a sessão.
+                  </p>
+                  <Link
+                    to="/reservas"
+                    className="block w-full bg-black text-white text-center font-semibold py-4 rounded-full text-sm tracking-wider uppercase transition-all duration-300 hover:bg-black/80"
+                  >
+                    Ver disponibilidade
+                  </Link>
+                </div>
+              </AnimateOnScroll>
+            </div>
+
           </div>
         </div>
       </section>

@@ -2,65 +2,49 @@ import { Link } from 'react-router-dom';
 
 export default function Hero() {
   return (
-    <section className="relative h-screen min-h-[600px] overflow-hidden bg-[#0a0a0a]" aria-label="Hero">
-      {/* Abstract dark background */}
+    <section className="relative h-screen min-h-[600px] overflow-hidden bg-black" aria-label="Hero">
+      {/* Background image */}
       <div className="absolute inset-0">
-        <div className="absolute inset-0 bg-gradient-to-br from-[#0a0a0a] via-[#111] to-[#0a0a0a]" />
-        {/* Subtle radial glow */}
-        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] h-[800px] bg-[#e2ff00]/[0.03] rounded-full blur-[120px]" />
+        <img
+          src="/background.avif"
+          alt=""
+          className="w-full h-full object-cover"
+        />
+        <div className="absolute inset-0 bg-black/40" />
       </div>
-
-      {/* Grain texture */}
-      <div className="grain" />
 
       {/* Content */}
       <div className="relative z-10 flex flex-col items-center justify-center h-full text-center text-white px-4">
-        <div className="stagger-children">
-          {/* Accent tag */}
-          <div className="mb-8">
-            <span className="inline-block px-4 py-1.5 text-xs uppercase tracking-[0.4em] text-[#e2ff00]/80 font-medium border border-[#e2ff00]/20 rounded-full">
-              Estúdios Profissionais
-            </span>
-          </div>
-
-          {/* Title */}
-          <div className="mb-6">
-            <h1 className="font-display font-bold leading-none">
-              <span className="block text-5xl sm:text-6xl md:text-7xl lg:text-8xl xl:text-9xl tracking-tight text-white">
-                LYX
-              </span>
-              <span className="block text-5xl sm:text-6xl md:text-7xl lg:text-8xl xl:text-9xl tracking-tight text-[#e2ff00] glow-text mt-1">
-                STUDIO
-              </span>
-            </h1>
-          </div>
-
-          {/* Subtitle */}
-          <div className="mb-12">
-            <p className="text-lg sm:text-xl md:text-2xl text-white/40 max-w-2xl leading-relaxed font-light">
-              Três salas. Um som. A tua visão ganha vida aqui.
-            </p>
-          </div>
-
-          {/* CTAs */}
-          <div className="flex flex-col sm:flex-row gap-4 items-center justify-center">
-            <Link
-              to="/reservas"
-              className="btn-magnetic inline-flex items-center gap-3 bg-[#e2ff00] text-black font-semibold py-4 px-10 rounded-lg text-sm tracking-wider uppercase transition-all duration-500 hover:shadow-[0_0_40px_rgba(226,255,0,0.25)]"
-            >
-              Agendar Sessão
-              <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 8l4 4m0 0l-4 4m4-4H3" />
-              </svg>
-            </Link>
-            <Link
-              to="/contactos"
-              className="inline-flex items-center gap-3 border border-white/20 text-white/70 hover:text-white hover:border-white/40 font-medium py-4 px-10 rounded-lg text-sm tracking-wider uppercase transition-all duration-500"
-            >
-              Contactar
-            </Link>
-          </div>
+        {/* Logo */}
+        <div className="mb-16">
+          <img
+            src="/logo.png"
+            alt="Lyx Studios"
+            className="h-24 sm:h-28 md:h-32 w-auto mx-auto"
+          />
         </div>
+
+        {/* Heading */}
+        <h1 className="font-display text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-bold leading-tight tracking-tight text-white mb-10">
+          Elegante, Puro e<br />
+          Visionário.
+        </h1>
+
+        {/* Subtitle */}
+        <p className="text-base sm:text-lg md:text-xl text-white/60 max-w-xl leading-relaxed font-light mb-12">
+          Três salas, uma experiência fluida: escolha simples, acesso discreto, tudo pronto à chegada.
+        </p>
+
+        {/* CTA */}
+        <Link
+          to="/reservas"
+          className="inline-flex items-center gap-3 bg-white text-black font-semibold py-4 px-10 rounded-full text-sm tracking-wider uppercase transition-all duration-500 hover:bg-white/90"
+        >
+          Reservar
+          <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 8l4 4m0 0l-4 4m4-4H3" />
+          </svg>
+        </Link>
       </div>
 
       {/* Scroll indicator */}
