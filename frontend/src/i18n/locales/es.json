@@ -1,0 +1,159 @@
+﻿{
+  "nav": {
+    "home": "Inicio",
+    "accommodation": "Alojamiento",
+    "gallery": "Galería",
+    "history": "Historia",
+    "sustainability": "Sostenibilidad",
+    "reservations": "Reservas",
+    "contact": "Contacto",
+    "admin": "Admin"
+  },
+  "hero": {
+    "tagline": "Dormir con la historia, despertar con la naturaleza.",
+    "cta": "Reservar",
+    "location": "Cabanas de Tavira"
+  },
+  "home": {
+    "concept_title": "Concepto",
+    "concept_text": "En el corazón de Cabanas de Tavira, Casa do Posto das Marés es un alojamiento turístico que combina la preservación del patrimonio con el confort contemporáneo. Ubicado en un edificio histórico de principios del siglo XX, antiguo puesto de la Guardia Fiscal, este espacio ha sido rehabilitado con respeto por su identidad, ofreciendo una experiencia auténtica entre la Ría Formosa y la tradición del Algarve.",
+    "services_title": "Servicios",
+    "gallery_title": "Galería",
+    "gallery_subtitle": "Descubra Casa do Posto das Marés por dentro y por fuera.",
+    "location_title": "Ubicación",
+    "view_all": "Ver todo"
+  },
+  "services": {
+    "breakfast": "Desayuno bajo pedido (productos locales y de temporada)",
+    "wifi": "Wi-Fi gratuito",
+    "pool": "Piscina exterior",
+    "parking": "Aparcamiento privado gratuito (limitado)",
+    "accessibility": "Accesibilidad para movilidad reducida",
+    "gardens": "Jardines y zona de descanso con vistas a la Ría Formosa",
+    "shop": "Espacio de productos regionales a la venta",
+    "cleaning": "Limpieza incluida (frecuencia adaptada)",
+    "tourism": "Apoyo turístico y sugerencias de actividades"
+  },
+  "accommodation": {
+    "title": "Alojamiento",
+    "typology": "Tipo T4",
+    "description": "Casa do Posto das Marés dispone de 4 habitaciones, dobles e individuales, todas con baño privado. El espacio está diseñado para acoger a familias y grupos que buscan privacidad y confort junto a la Ría Formosa.",
+    "price_label": "Precio por noche (T4 completo)",
+    "price_value": "350€",
+    "price_note": "A confirmar, precio indicativo",
+    "amenities_title": "Comodidades",
+    "to_confirm_title": "A confirmar",
+    "to_confirm_items": [
+      "Distribución exacta de habitaciones dobles vs. individuales",
+      "Número de baños privados por habitación",
+      "Capacidad máxima de huéspedes"
+    ],
+    "photos_title": "Fotos del alojamiento"
+  },
+  "gallery": {
+    "title": "Galería",
+    "exterior": "Exterior",
+    "interior": "Interior",
+    "all": "Todas",
+    "close": "Cerrar",
+    "previous": "Anterior",
+    "next": "Siguiente"
+  },
+  "history": {
+    "title": "Historia",
+    "intro": "El edificio que hoy alberga Casa do Posto das Marés tiene sus raíces a principios del siglo XX, cuando fue construido como Puesto de la Guardia Fiscal en Cabanas de Tavira.",
+    "timeline": [
+      { "year": "Principios del s. XX", "text": "Construcción del edificio como Puesto de la Guardia Fiscal, integrado en el sistema de vigilancia aduanera del Algarve." },
+      { "year": "Décadas de servicio", "text": "El puesto desempeñó un papel fundamental en el control marítimo y fiscal en la zona de la Ría Formosa, siendo testigo de décadas de historia local." },
+      { "year": "Desactivación", "text": "Con la evolución de los servicios fiscales, el edificio fue desactivado y permaneció sin uso durante varios años." },
+      { "year": "Rehabilitación", "text": "El proyecto de rehabilitación transformó el antiguo puesto en un alojamiento turístico con encanto, preservando la fachada original y elementos arquitectónicos de valor patrimonial." },
+      { "year": "Presente", "text": "Hoy, Casa do Posto das Marés es un espacio que une historia y naturaleza, ofreciendo a los huéspedes una experiencia única con vistas a la Ría Formosa y el confort de un alojamiento contemporáneo." }
+    ]
+  },
+  "sustainability": {
+    "title": "Integración Patrimonial, Protección Ambiental y Valorización Local",
+    "subtitle": "Un compromiso con el territorio, el medio ambiente y la comunidad.",
+    "sections": [
+      { "icon": "building", "title": "Historia del Edificio", "text": "Construido a principios del siglo XX, en el Beco Vasco da Gama, este fue el primer edificio público de la localidad y funcionó durante décadas como puesto de la Guardia Fiscal, vinculado al control costero, la fiscalización y la prevención del contrabando. Con la extinción de la Guardia Fiscal en 1993, sus funciones pasaron a la GNR (Guardia Nacional Republicana). Tras el fin del uso operacional, el edificio fue adaptado temporalmente como casa de vacaciones para los guardas y sus familias, terminando por ser completamente desactivado y quedar abandonado, entrando gradualmente en degradación." },
+      { "icon": "leaf", "title": "Sensibilidad Ecológica", "text": "La ubicación en Cabanas de Tavira, junto a la Ría Formosa, exige un enfoque especialmente cuidadoso en relación con la protección y conservación del medio ambiente. Se trata de un territorio de elevada sensibilidad ecológica, donde el equilibrio entre mareas, marismas y dunas sostiene hábitats importantes y condiciona la calidad paisajística de la región. En este contexto, la concepción y la operación diaria del alojamiento se orientan por un conjunto de medidas que buscan minimizar los impactos asociados a la actividad turística, privilegiando la eficiencia en el uso de recursos, la reducción de desperdicios y la promoción de un uso más responsable del territorio." },
+      { "icon": "bolt", "title": "Eficiencia y Gestión de Recursos", "text": "Se han adoptado acciones de naturaleza operacional y técnica orientadas a reducir consumos y emisiones, concretamente mediante la implementación de soluciones de eficiencia energética, la gestión racional de climatización e iluminación y el seguimiento de consumos para identificar desviaciones y permitir una intervención rápida. En el ámbito hídrico, cobra especial relevancia la prevención de desperdicios y la detección oportuna de anomalías, complementada por equipos que promueven un uso eficiente del agua. Paralelamente, la gestión de residuos desempeña un papel central en la protección ambiental, ya que una parte significativa de los desechos en zonas costeras y lagunares resulta de prácticas cotidianas y consumos de pequeña escala. Así, se garantizan condiciones de separación y encaminamiento adecuados, reduciendo siempre que sea posible el recurso a artículos desechables." },
+      { "icon": "path", "title": "Estrategia de Preservación", "text": "La estrategia de preservación incluye medidas que orientan al visitante, buscando reducir la presión sobre las áreas más sensibles. En este ámbito, se promueve la utilización de recorridos existentes y debidamente estructurados, como senderos y pasarelas, desincentivando atajos por dunas y zonas de vegetación frágil. Complementariamente, se considera la gestión de factores con impacto directo en la fauna y la tranquilidad del ecosistema, como el control de ruido y la adecuación de la iluminación exterior, reduciendo perturbaciones nocturnas y efectos de contaminación lumínica." },
+      { "icon": "handshake", "title": "Valorización Local", "text": "La protección del entorno se refuerza mediante una política de valorización del territorio y su economía, integrando la selección de artículos locales, como flor de sal, dulces regionales y artesanía, y privilegiando colaboraciones con productores, comercio y operadores locales. Este componente contribuye a la fijación de valor en la región y a una conexión más auténtica con el territorio, coherente con la identidad de Cabanas de Tavira." },
+      { "icon": "shield", "title": "Integración Responsable", "text": "El conjunto de acciones adoptadas busca asegurar que el alojamiento se integra de forma responsable en el territorio, conciliando confort y funcionalidad con una intervención orientada hacia la eficiencia, la minimización de impactos y la preservación del patrimonio natural y cultural que distingue y valoriza este lugar." }
+    ]
+  },
+  "reservations": {
+    "title": "Reservas",
+    "calendar_title": "Disponibilidad",
+    "form_title": "Formulario de reserva",
+    "check_in": "Entrada",
+    "check_out": "Salida",
+    "guests": "Número de huéspedes",
+    "name": "Nombre completo",
+    "email": "Email",
+    "phone": "Teléfono",
+    "notes": "Notas / solicitudes especiales",
+    "submit": "Enviar reserva",
+    "submitting": "Enviando...",
+    "success": "Reserva enviada con éxito! Nos pondremos en contacto pronto.",
+    "error": "Error al enviar la reserva. Inténtelo de nuevo.",
+    "unavailable": "No disponible",
+    "available": "Disponible",
+    "status_pending": "Pendiente",
+    "status_confirmed": "Confirmada",
+    "status_cancelled": "Cancelada",
+    "payment_note": "El pago se gestionará tras la confirmación, métodos disponibles próximamente (MB Way, tarjeta, transferencia)."
+  },
+  "contact": {
+    "title": "Contacto",
+    "address_label": "Dirección",
+    "phone_label": "Teléfono",
+    "email_label": "Email",
+    "form_title": "Envíenos un mensaje",
+    "name": "Nombre",
+    "email": "Email",
+    "subject": "Asunto",
+    "message": "Mensaje",
+    "send": "Enviar",
+    "sending": "Enviando...",
+    "success": "Mensaje enviado con éxito!",
+    "map_title": "Cómo llegar"
+  },
+  "admin": {
+    "title": "Panel de Administración",
+    "login_title": "Login Admin",
+    "email": "Email",
+    "password": "Contraseña",
+    "login": "Iniciar sesión",
+    "logout": "Cerrar sesión",
+    "bookings_title": "Reservas",
+    "blackouts_title": "Fechas bloqueadas",
+    "add_blackout": "Bloquear fechas",
+    "date_from": "Desde",
+    "date_to": "Hasta",
+    "reason": "Motivo",
+    "save": "Guardar",
+    "delete": "Eliminar",
+    "no_bookings": "Sin reservas.",
+    "no_blackouts": "Sin fechas bloqueadas.",
+    "status_change": "Cambiar estado"
+  },
+  "accessibility": {
+    "font_size": "Tamaño de fuente",
+    "high_contrast": "Alto contraste",
+    "read_aloud": "Leer en voz alta",
+    "stop_reading": "Detener lectura"
+  },
+  "footer": {
+    "rights": "Todos los derechos reservados.",
+    "tagline": "Dormir con la historia, despertar con la naturaleza.",
+    "address": "Beco Vasco da Gama, nº 1, 8800-595 Cabanas de Tavira"
+  },
+  "common": {
+    "loading": "Cargando...",
+    "error": "Se produjo un error.",
+    "back": "Volver",
+    "confirm": "Confirmar",
+    "cancel": "Cancelar"
+  }
+}

@@ -1,0 +1,159 @@
+﻿{
+  "nav": {
+    "home": "Home",
+    "accommodation": "Accommodation",
+    "gallery": "Gallery",
+    "history": "History",
+    "sustainability": "Sustainability",
+    "reservations": "Reservations",
+    "contact": "Contact",
+    "admin": "Admin"
+  },
+  "hero": {
+    "tagline": "Sleep with history, wake up with nature.",
+    "cta": "Book Now",
+    "location": "Cabanas de Tavira"
+  },
+  "home": {
+    "concept_title": "Concept",
+    "concept_text": "In the heart of Cabanas de Tavira, Casa do Posto das Marés is a tourist accommodation that blends heritage preservation with contemporary comfort. Set in a historic early 20th-century building, a former Fiscal Guard post, this space has been rehabilitated with respect for its identity, offering an authentic experience between the Ria Formosa and Algarve tradition.",
+    "services_title": "Services",
+    "gallery_title": "Gallery",
+    "gallery_subtitle": "Discover Casa do Posto das Marés inside and out.",
+    "location_title": "Location",
+    "view_all": "View all"
+  },
+  "services": {
+    "breakfast": "Breakfast on request (local & seasonal products)",
+    "wifi": "Free Wi-Fi",
+    "pool": "Outdoor pool",
+    "parking": "Free private parking (limited)",
+    "accessibility": "Reduced mobility accessibility",
+    "gardens": "Gardens & lounge area with Ria Formosa views",
+    "shop": "Regional products for sale",
+    "cleaning": "Cleaning included (adapted frequency)",
+    "tourism": "Tourist support & activity suggestions"
+  },
+  "accommodation": {
+    "title": "Accommodation",
+    "typology": "Type T4",
+    "description": "Casa do Posto das Marés offers 4 bedrooms, double and single, all with private bathroom. The space is designed to welcome families and groups looking for privacy and comfort by the Ria Formosa.",
+    "price_label": "Price per night (full T4)",
+    "price_value": "€350",
+    "price_note": "To be confirmed, indicative price",
+    "amenities_title": "Amenities",
+    "to_confirm_title": "To be confirmed",
+    "to_confirm_items": [
+      "Exact distribution of double vs. single rooms",
+      "Number of private bathrooms per room",
+      "Maximum guest capacity"
+    ],
+    "photos_title": "Accommodation Photos"
+  },
+  "gallery": {
+    "title": "Gallery",
+    "exterior": "Exterior",
+    "interior": "Interior",
+    "all": "All",
+    "close": "Close",
+    "previous": "Previous",
+    "next": "Next"
+  },
+  "history": {
+    "title": "History",
+    "intro": "The building that now houses Casa do Posto das Marés has its roots in the early 20th century, when it was built as a Fiscal Guard Post in Cabanas de Tavira.",
+    "timeline": [
+      { "year": "Early 20th century", "text": "Construction of the building as a Fiscal Guard Post, integrated into the Algarve's customs surveillance system." },
+      { "year": "Decades of service", "text": "The post played a fundamental role in maritime and fiscal control in the Ria Formosa area, witnessing decades of local history." },
+      { "year": "Deactivation", "text": "With the evolution of fiscal services, the building was deactivated and remained unused for several years." },
+      { "year": "Rehabilitation", "text": "The rehabilitation project transformed the former post into a charming tourist accommodation, preserving the original facade and architecturally valuable elements." },
+      { "year": "Present", "text": "Today, Casa do Posto das Marés is a space that unites history and nature, offering guests a unique experience with views of the Ria Formosa and the comfort of contemporary accommodation." }
+    ]
+  },
+  "sustainability": {
+    "title": "Heritage Integration, Environmental Protection & Local Valorization",
+    "subtitle": "A commitment to the territory, the environment, and the community.",
+    "sections": [
+      { "icon": "building", "title": "Building History", "text": "Built in the early 20th century, on Beco Vasco da Gama, this was the first public building in the locality and served for decades as a Fiscal Guard post, linked to coastal control, inspection and smuggling prevention. With the extinction of the Fiscal Guard in 1993, its functions were transferred to the GNR (National Republican Guard). After the end of operational use, the building was temporarily converted into a holiday house for the guards and their families, eventually being completely deactivated and left vacant, gradually falling into disrepair." },
+      { "icon": "leaf", "title": "Ecological Sensitivity", "text": "The location in Cabanas de Tavira, next to the Ria Formosa, requires a particularly careful approach regarding environmental protection and conservation. This is a territory of high ecological sensitivity, where the balance between tides, salt marshes and dunes sustains important habitats and shapes the landscape quality of the region. In this context, the design and daily operation of the accommodation are guided by a set of measures aimed at minimizing the impacts associated with tourism, prioritizing efficiency in resource use, waste reduction and the promotion of more responsible land use." },
+      { "icon": "bolt", "title": "Efficiency & Resource Management", "text": "Operational and technical actions have been adopted to reduce consumption and emissions, namely through the implementation of energy efficiency solutions, rational management of climate control and lighting, and monitoring of consumption to identify deviations and allow swift intervention. In the water domain, waste prevention and timely detection of anomalies are particularly relevant, complemented by equipment that promotes efficient water use. In parallel, waste management plays a central role in environmental protection, as a significant portion of waste in coastal and lagoon areas results from everyday practices and small-scale consumption. Adequate separation and routing conditions are ensured, reducing the use of disposable items whenever possible." },
+      { "icon": "path", "title": "Preservation Strategy", "text": "The preservation strategy includes measures that guide visitors, seeking to reduce pressure on more sensitive areas. In this regard, the use of existing and properly structured paths, such as trails and boardwalks, is promoted, discouraging shortcuts through dunes and fragile vegetation zones. Additionally, the management of factors with direct impact on fauna and ecosystem tranquility is considered, namely noise control and the adaptation of exterior lighting, reducing nocturnal disturbances and light pollution effects." },
+      { "icon": "handshake", "title": "Local Valorization", "text": "The protection of the surrounding environment is reinforced by a policy of valorizing the territory and its economy, integrating the selection of local products, such as fleur de sel, regional pastries and handicrafts, and prioritizing partnerships with local producers, commerce and operators. This component contributes to retaining value in the region and to a more authentic connection to the territory, consistent with the identity of Cabanas de Tavira." },
+      { "icon": "shield", "title": "Responsible Integration", "text": "The set of adopted actions aims to ensure that the accommodation integrates responsibly into the territory, reconciling comfort and functionality with an intervention oriented towards efficiency, impact minimization, and the preservation of the natural and cultural heritage that distinguishes and enhances this place." }
+    ]
+  },
+  "reservations": {
+    "title": "Reservations",
+    "calendar_title": "Availability",
+    "form_title": "Booking Form",
+    "check_in": "Check-in",
+    "check_out": "Check-out",
+    "guests": "Number of guests",
+    "name": "Full name",
+    "email": "Email",
+    "phone": "Phone",
+    "notes": "Notes / special requests",
+    "submit": "Submit Booking",
+    "submitting": "Submitting...",
+    "success": "Booking submitted successfully! We'll be in touch shortly.",
+    "error": "Error submitting booking. Please try again.",
+    "unavailable": "Unavailable",
+    "available": "Available",
+    "status_pending": "Pending",
+    "status_confirmed": "Confirmed",
+    "status_cancelled": "Cancelled",
+    "payment_note": "Payment will be handled after confirmation, available methods coming soon (MB Way, card, transfer)."
+  },
+  "contact": {
+    "title": "Contact",
+    "address_label": "Address",
+    "phone_label": "Phone",
+    "email_label": "Email",
+    "form_title": "Send us a message",
+    "name": "Name",
+    "email": "Email",
+    "subject": "Subject",
+    "message": "Message",
+    "send": "Send",
+    "sending": "Sending...",
+    "success": "Message sent successfully!",
+    "map_title": "How to get here"
+  },
+  "admin": {
+    "title": "Admin Panel",
+    "login_title": "Admin Login",
+    "email": "Email",
+    "password": "Password",
+    "login": "Sign in",
+    "logout": "Sign out",
+    "bookings_title": "Bookings",
+    "blackouts_title": "Blocked Dates",
+    "add_blackout": "Block dates",
+    "date_from": "From",
+    "date_to": "To",
+    "reason": "Reason",
+    "save": "Save",
+    "delete": "Remove",
+    "no_bookings": "No bookings.",
+    "no_blackouts": "No blocked dates.",
+    "status_change": "Change status"
+  },
+  "accessibility": {
+    "font_size": "Font size",
+    "high_contrast": "High contrast",
+    "read_aloud": "Read aloud",
+    "stop_reading": "Stop reading"
+  },
+  "footer": {
+    "rights": "All rights reserved.",
+    "tagline": "Sleep with history, wake up with nature.",
+    "address": "Beco Vasco da Gama, nº 1, 8800-595 Cabanas de Tavira"
+  },
+  "common": {
+    "loading": "Loading...",
+    "error": "An error occurred.",
+    "back": "Back",
+    "confirm": "Confirm",
+    "cancel": "Cancel"
+  }
+}
