@@ -128,13 +128,52 @@ export default function Reservations() {
   };
 
   return (
-    <main className="page-enter bg-[#0a0a0a] min-h-screen">
+    <main className="page-enter bg-[#0a0a0a] min-h-screen relative overflow-hidden">
+      {/* Background — two mirrored silhouettes, back to back */}
+      <div className="fixed inset-0 z-0 pointer-events-none">
+        {/* Left silhouette — original image, positioned so the figure sits at the left edge */}
+        <div
+          className="absolute top-0 left-0 w-[45%] h-full"
+          style={{
+            backgroundImage: 'url(/background.avif)',
+            backgroundSize: 'cover',
+            backgroundPosition: 'center right',
+            backgroundRepeat: 'no-repeat',
+            opacity: 0.2,
+            maskImage: 'linear-gradient(to right, black 0%, black 40%, transparent 100%)',
+            WebkitMaskImage: 'linear-gradient(to right, black 0%, black 40%, transparent 100%)',
+          }}
+        />
+        {/* Right silhouette — mirrored, positioned so the figure sits at the right edge */}
+        <div
+          className="absolute top-0 right-0 w-[45%] h-full"
+          style={{
+            backgroundImage: 'url(/background.avif)',
+            backgroundSize: 'cover',
+            backgroundPosition: 'center right',
+            backgroundRepeat: 'no-repeat',
+            transform: 'scaleX(-1)',
+            opacity: 0.2,
+            maskImage: 'linear-gradient(to right, black 0%, black 40%, transparent 100%)',
+            WebkitMaskImage: 'linear-gradient(to right, black 0%, black 40%, transparent 100%)',
+          }}
+        />
+        {/* Vertical fade — darken top and bottom edges */}
+        <div
+          className="absolute inset-0"
+          style={{
+            background: 'linear-gradient(to bottom, #0a0a0a 0%, transparent 15%, transparent 85%, #0a0a0a 100%)',
+          }}
+        />
+      </div>
+
       {/* Header */}
-      <div className="pt-32 pb-12 text-center px-4">
-        <h1 className="font-display text-5xl sm:text-6xl md:text-7xl lg:text-8xl font-bold text-white uppercase tracking-tight mb-8">
+      <div className="relative z-10 pt-24 pb-10 text-center px-4">
+        <img src="/logo.png" alt="LYX Studios" className="h-28 sm:h-32 md:h-36 mx-auto mb-2 object-contain" />
+        <h1 className="font-display text-6xl sm:text-7xl md:text-8xl lg:text-[110px] font-bold text-white uppercase tracking-tight mb-6 leading-none">
           Reservas
         </h1>
-        <div className="space-y-1.5 text-white/35 text-sm tracking-wide">
+        <div className="space-y-1 text-white/35 text-[13px] sm:text-sm tracking-wide font-light">
           <p>Escolhe a sala pretendida</p>
           <p>Seleciona a data e hora</p>
           <p>Recebe a confirmação e todas as informações no e-mail</p>
@@ -142,7 +181,7 @@ export default function Reservations() {
       </div>
 
       {/* Booking Widget */}
-      <div className="max-w-4xl mx-auto px-4 sm:px-6 pb-28">
+      <div className="relative z-10 max-w-4xl mx-auto px-4 sm:px-6 pb-28">
         <div className="rounded-2xl border border-white/[0.08] bg-[#0c0c0c] overflow-hidden">
           {/* ── Room Tabs ── */}
           <div className="flex border-b border-white/[0.06]">
