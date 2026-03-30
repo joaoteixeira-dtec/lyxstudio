@@ -3,6 +3,15 @@
 
 @import "tailwindcss";
 
+/* Hide scrollbar for swipeable carousels */
+.scrollbar-hide {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+.scrollbar-hide::-webkit-scrollbar {
+  display: none;
+}
+
 /* ===== Custom base styles ===== */
 @layer base {
   :root {
