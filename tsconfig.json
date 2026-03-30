@@ -12,6 +12,6 @@
     "outDir": "./dist",
     "rootDir": "."
   },
-  "include": ["api/**/*", "backend/src/**/*", "backend/knexfile.ts"],
+  "include": ["api/**/*", "backend/src/**/*"],
   "exclude": ["node_modules", "frontend"]
 }

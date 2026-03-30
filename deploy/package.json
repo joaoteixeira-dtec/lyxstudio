@@ -4,9 +4,7 @@
   "description": "Vanguard Ceremony - Alojamento Turístico em Cabanas de Tavira",
   "scripts": {
     "start": "npx tsx src/index.ts",
-    "migrate": "npx tsx node_modules/.bin/knex migrate:latest --knexfile knexfile.ts",
-    "seed": "npx tsx node_modules/.bin/knex seed:run --knexfile knexfile.ts",
-    "setup": "npm run migrate && npm run seed"
+    "seed": "npx tsx seeds/seed-firebase.ts"
   },
   "dependencies": {
     "bcryptjs": "^2.4.3",
@@ -14,9 +12,8 @@
     "dotenv": "^16.4.7",
     "express": "^4.21.2",
     "express-rate-limit": "^7.5.0",
+    "firebase-admin": "^13.0.0",
     "jsonwebtoken": "^9.0.2",
-    "knex": "^3.1.0",
-    "mysql2": "^3.12.0",
     "tsx": "^4.19.2",
     "typescript": "^5.7.3",
     "zod": "^3.24.2"

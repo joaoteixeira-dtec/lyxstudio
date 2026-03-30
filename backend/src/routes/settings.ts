@@ -6,12 +6,12 @@ const router = Router();
 // GET /api/settings — retorna todas as settings como key/value
 router.get('/', async (_req: Request, res: Response) => {
   try {
-    const rows = await db('settings').select('*');
-    const settings: Record<string, string> = {};
-    for (const row of rows) {
-      settings[row.key] = row.value;
+    const doc = await db.collection('settings').doc('main').get();
+    if (!doc.exists) {
+      res.json({});
+      return;
     }
-    res.json(settings);
+    res.json(doc.data());
   } catch (err) {
     console.error('Erro ao ler settings:', err);
     res.status(500).json({ error: 'Erro ao carregar configurações.' });

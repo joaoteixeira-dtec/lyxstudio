@@ -17,18 +17,23 @@ router.get('/', async (req: Request, res: Response) => {
     const from = parsed.data.from || new Date().toISOString().slice(0, 10);
     const to = parsed.data.to || new Date(Date.now() + 90 * 24 * 60 * 60 * 1000).toISOString().slice(0, 10);
 
-    // Get confirmed/pending bookings in range
-    const bookings = await db('bookings')
-      .where('status', '!=', 'cancelled')
+    // Get bookings in range, filter cancelled in-memory
+    const bookingSnap = await db.collection('bookings')
       .where('check_in', '<', to)
-      .andWhere('check_out', '>', from)
-      .select('check_in', 'check_out', 'status');
+      .where('check_out', '>', from)
+      .get();
+
+    const bookings = bookingSnap.docs
+      .map(doc => doc.data())
+      .filter(b => b.status !== 'cancelled');
 
     // Get blackouts in range
-    const blackouts = await db('blackouts')
+    const blackoutSnap = await db.collection('blackouts')
       .where('date_from', '<=', to)
-      .andWhere('date_to', '>=', from)
-      .select('date_from', 'date_to', 'reason');
+      .where('date_to', '>=', from)
+      .get();
+
+    const blackouts = blackoutSnap.docs.map(doc => doc.data());
 
     // Build unavailable dates array
     const unavailableDates: string[] = [];
@@ -74,15 +79,15 @@ router.post('/blackouts', authMiddleware, async (req: AuthRequest, res: Response
       return;
     }
 
-    const [id] = await db('blackouts').insert({
+    const docRef = await db.collection('blackouts').add({
       date_from: parsed.data.date_from,
       date_to: parsed.data.date_to,
       reason: parsed.data.reason,
-      created_at: new Date(),
+      created_at: new Date().toISOString(),
     });
 
-    const blackout = await db('blackouts').where('id', id).first();
-    res.status(201).json(blackout);
+    const newDoc = await docRef.get();
+    res.status(201).json({ id: newDoc.id, ...newDoc.data() });
   } catch (err) {
     console.error('Erro ao criar blackout:', err);
     res.status(500).json({ error: 'Erro ao bloquear datas.' });
@@ -92,7 +97,8 @@ router.post('/blackouts', authMiddleware, async (req: AuthRequest, res: Response
 // GET /api/availability/blackouts — admin: listar blackouts
 router.get('/blackouts', authMiddleware, async (_req: AuthRequest, res: Response) => {
   try {
-    const blackouts = await db('blackouts').orderBy('date_from', 'asc');
+    const snapshot = await db.collection('blackouts').orderBy('date_from', 'asc').get();
+    const blackouts = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
     res.json(blackouts);
   } catch (err) {
     console.error('Erro ao listar blackouts:', err);
@@ -104,12 +110,13 @@ router.get('/blackouts', authMiddleware, async (_req: AuthRequest, res: Response
 router.delete('/blackouts/:id', authMiddleware, async (req: AuthRequest, res: Response) => {
   try {
     const { id } = req.params;
-    const existing = await db('blackouts').where('id', id).first();
-    if (!existing) {
+    const docRef = db.collection('blackouts').doc(id);
+    const existing = await docRef.get();
+    if (!existing.exists) {
       res.status(404).json({ error: 'Blackout não encontrado.' });
       return;
     }
-    await db('blackouts').where('id', id).delete();
+    await docRef.delete();
     res.json({ message: 'Blackout removido.' });
   } catch (err) {
     console.error('Erro ao remover blackout:', err);

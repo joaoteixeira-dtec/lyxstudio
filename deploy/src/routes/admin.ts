@@ -21,11 +21,14 @@ router.post('/login', async (req: Request, res: Response) => {
 
     const { email, password } = parsed.data;
 
-    const admin = await db('admins').where('email', email).first();
-    if (!admin) {
+    const snapshot = await db.collection('admins').where('email', '==', email).limit(1).get();
+    if (snapshot.empty) {
       res.status(401).json({ error: 'Credenciais inválidas.' });
       return;
     }
+
+    const adminDoc = snapshot.docs[0];
+    const admin = { id: adminDoc.id, ...adminDoc.data() } as any;
 
     const valid = await bcrypt.compare(password, admin.password_hash);
     if (!valid) {

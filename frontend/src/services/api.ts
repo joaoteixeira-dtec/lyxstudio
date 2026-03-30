@@ -29,7 +29,7 @@ export const getSettings = () => request<Record<string, string>>('/settings');
 
 // ---- Bookings ----
 export interface Booking {
-  id: number;
+  id: string;
   check_in: string;
   check_out: string;
   guests: number;
@@ -62,7 +62,7 @@ export const getBookings = (from?: string, to?: string) => {
 export const createBooking = (data: CreateBookingData) =>
   request<Booking>('/bookings', { method: 'POST', body: JSON.stringify(data) });
 
-export const updateBookingStatus = (id: number, status: string, token: string) =>
+export const updateBookingStatus = (id: string, status: string, token: string) =>
   request<Booking>(`/bookings/${id}`, {
     method: 'PATCH',
     body: JSON.stringify({ status }),
@@ -88,7 +88,7 @@ export const getAvailability = (from?: string, to?: string) => {
 
 // ---- Blackouts ----
 export interface Blackout {
-  id: number;
+  id: string;
   date_from: string;
   date_to: string;
   reason: string;
@@ -105,7 +105,7 @@ export const createBlackout = (data: { date_from: string; date_to: string; reaso
     headers: authHeaders(token),
   });
 
-export const deleteBlackout = (id: number, token: string) =>
+export const deleteBlackout = (id: string, token: string) =>
   request<{ message: string }>(`/availability/blackouts/${id}`, {
     method: 'DELETE',
     headers: authHeaders(token),
@@ -113,7 +113,7 @@ export const deleteBlackout = (id: number, token: string) =>
 
 // ---- Admin ----
 export const adminLogin = (email: string, password: string) =>
-  request<{ token: string; admin: { id: number; email: string } }>('/admin/login', {
+  request<{ token: string; admin: { id: string; email: string } }>('/admin/login', {
     method: 'POST',
     body: JSON.stringify({ email, password }),
   });

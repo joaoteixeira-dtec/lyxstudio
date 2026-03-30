@@ -1,5 +1,5 @@
 // Vercel Serverless Function — wraps the Express backend
-// Environment variables (DB_HOST, DB_USER, DB_PASSWORD, DB_NAME, DB_PORT, JWT_SECRET)
+// Environment variables (FIREBASE_SERVICE_ACCOUNT, JWT_SECRET)
 // must be set in the Vercel dashboard.
 
 process.env.NODE_ENV = process.env.NODE_ENV || 'production';
