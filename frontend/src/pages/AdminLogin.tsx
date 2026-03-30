@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { Link } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
 import { adminLogin } from '../services/api';
 import { useToast } from '../components/Toast';
@@ -28,10 +29,10 @@ export default function AdminLogin() {
     <main className="page-enter min-h-screen flex items-center justify-center bg-[#0a0a0a] py-20">
       <div className="w-full max-w-md mx-auto px-4">
         <div className="text-center mb-8">
-          <div className="flex items-center justify-center gap-0.5">
+          <Link to="/" className="flex items-center justify-center gap-0.5">
             <span className="font-display text-2xl font-bold text-white">LYX</span>
             <span className="font-display text-2xl font-bold text-[#e2ff00]">STUDIO</span>
-          </div>
+          </Link>
         </div>
         <div className="bg-[#111] rounded-2xl border border-white/5 p-8 md:p-10">
           <h1 className="font-display text-2xl font-bold text-white text-center mb-8">

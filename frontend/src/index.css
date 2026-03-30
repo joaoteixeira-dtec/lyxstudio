@@ -34,8 +34,8 @@
   }
 
   ::selection {
-    background: var(--color-accent);
-    color: var(--color-dark);
+    background: highlight;
+    color: highlighttext;
   }
 }
 

@@ -16,13 +16,13 @@ export default function Hero() {
       {/* Content */}
       <div className="relative z-10 flex flex-col items-center justify-center h-full text-center text-white px-4">
         {/* Logo */}
-        <div className="mb-16">
+        <Link to="/" className="mb-16 block">
           <img
             src="/logo.png"
             alt="Lyx Studios"
             className="h-24 sm:h-28 md:h-32 w-auto mx-auto"
           />
-        </div>
+        </Link>
 
         {/* Heading */}
         <h1 className="font-display text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-bold leading-tight tracking-tight text-white mb-10">

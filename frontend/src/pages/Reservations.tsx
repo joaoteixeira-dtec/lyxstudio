@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react';
+import { Link } from 'react-router-dom';
 import Calendar from '../components/Calendar';
 import { getAvailability, createBooking, type CreateBookingData } from '../services/api';
 import { useToast } from '../components/Toast';
@@ -169,7 +170,9 @@ export default function Reservations() {
 
       {/* Header */}
       <div className="relative z-10 pt-24 pb-10 text-center px-4">
-        <img src="/logo.png" alt="LYX Studios" className="h-28 sm:h-32 md:h-36 mx-auto mb-2 object-contain" />
+        <Link to="/">
+          <img src="/logo.png" alt="LYX Studios" className="h-28 sm:h-32 md:h-36 mx-auto mb-2 object-contain" />
+        </Link>
         <h1 className="font-display text-6xl sm:text-7xl md:text-8xl lg:text-[110px] font-bold text-white uppercase tracking-tight mb-6 leading-none">
           Reservas
         </h1>
