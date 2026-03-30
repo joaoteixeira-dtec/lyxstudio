@@ -11,7 +11,9 @@ export default function Footer() {
       {/* Logo Section */}
       <div className="py-24 md:py-32 flex items-center justify-center">
         <AnimateOnScroll animation="fade-up" duration={1200}>
-          <img src="/logo.png" alt="LYX Studios" className="w-full max-w-[330px] object-contain mx-auto" />
+          <Link to="/">
+            <img src="/logo.png" alt="LYX Studios" className="w-full max-w-[330px] object-contain mx-auto" />
+          </Link>
         </AnimateOnScroll>
       </div>
 

@@ -5,27 +5,27 @@ import AnimateOnScroll from '../components/AnimateOnScroll';
 import ScrollCarousel from '../components/ScrollCarousel';
 
 const veludo = [
-  { image: '/c1.webp', title: 'Cabeceira Luminosa', description: 'Cabeceira em veludo com luz ambiente difusa para um mood elegante.', number: '01' },
-  { image: '/c2.webp', title: 'Cama & Têxteis Premium', description: 'Lençóis de algodão egípcio e manta pesada para conforto absoluto.', number: '02' },
-  { image: '/c3.webp', title: 'Iluminação Regulável', description: 'Candeeiros de parede e dimmer para ajustar a intensidade em segundos.', number: '03' },
-  { image: '/c4.webp', title: 'Som & Silêncio', description: 'Isolamento acústico discreto e som ambiente para foco total.', number: '04' },
-  { image: '/c5.avif', title: 'Higiene Selada', description: 'Amenidades individuais seladas sobre bandeja, tudo pronto e seguro.', number: '05' },
+  { image: '/studio1.jpeg', title: 'Cabeceira Luminosa', description: 'Cabeceira em veludo com luz ambiente difusa para um mood elegante.', number: '01' },
+  { image: '/studio2.jpeg', title: 'Cama & Têxteis Premium', description: 'Lençóis de algodão egípcio e manta pesada para conforto absoluto.', number: '02' },
+  { image: '/studio3.jpeg', title: 'Iluminação Regulável', description: 'Candeeiros de parede e dimmer para ajustar a intensidade em segundos.', number: '03' },
+  { image: '/studio4.jpeg', title: 'Som & Silêncio', description: 'Isolamento acústico discreto e som ambiente para foco total.', number: '04' },
+  { image: '/studio5.jpeg', title: 'Higiene Selada', description: 'Amenidades individuais seladas sobre bandeja, tudo pronto e seguro.', number: '05' },
 ];
 
 const obsidiana = [
-  { image: '/c4.webp', title: 'Mobiliário Modular', description: 'Banco estofado e módulos versáteis para diferentes configurações.', number: '01' },
-  { image: '/c5.avif', title: 'Pontos De Fixação Discretos', description: 'Fixações integradas e invisíveis quando não usadas.', number: '02' },
-  { image: '/c3.webp', title: 'Luz Por Zonas', description: 'Trilhos de luz independentes para criar cenários distintos.', number: '03' },
-  { image: '/c1.webp', title: 'Cabeceira Luminosa', description: 'Cabeceira em veludo com luz ambiente difusa para um mood elegante.', number: '04' },
-  { image: '/c2.webp', title: 'Higiene Selada', description: 'Amenidades individuais seladas sobre bandeja, tudo pronto e seguro.', number: '05' },
+  { image: '/studio6.jpeg', title: 'Mobiliário Modular', description: 'Banco estofado e módulos versáteis para diferentes configurações.', number: '01' },
+  { image: '/studio7.jpeg', title: 'Pontos De Fixação Discretos', description: 'Fixações integradas e invisíveis quando não usadas.', number: '02' },
+  { image: '/studio8.jpeg', title: 'Luz Por Zonas', description: 'Trilhos de luz independentes para criar cenários distintos.', number: '03' },
+  { image: '/studio9.jpeg', title: 'Cabeceira Luminosa', description: 'Cabeceira em veludo com luz ambiente difusa para um mood elegante.', number: '04' },
+  { image: '/studio10.jpeg', title: 'Higiene Selada', description: 'Amenidades individuais seladas sobre bandeja, tudo pronto e seguro.', number: '05' },
 ];
 
 const eclipse = [
-  { image: '/c4.webp', title: 'Mobiliário Modular', description: 'Banco estofado e módulos versáteis para diferentes configurações.', number: '01' },
-  { image: '/c5.avif', title: 'Pontos De Fixação Discretos', description: 'Fixações integradas e invisíveis quando não usadas.', number: '02' },
-  { image: '/c3.webp', title: 'Luz Por Zonas', description: 'Trilhos de luz independentes para criar cenários distintos.', number: '03' },
-  { image: '/c1.webp', title: 'Cabeceira Luminosa', description: 'Cabeceira em veludo com luz ambiente difusa para um mood elegante.', number: '04' },
-  { image: '/c1.webp', title: 'Cabeceira Luminosa', description: 'Cabeceira em veludo com luz ambiente difusa para um mood elegante.', number: '05' },
+  { image: '/studio11.jpeg', title: 'Mobiliário Modular', description: 'Banco estofado e módulos versáteis para diferentes configurações.', number: '01' },
+  { image: '/studio12.jpeg', title: 'Pontos De Fixação Discretos', description: 'Fixações integradas e invisíveis quando não usadas.', number: '02' },
+  { image: '/studio13.jpeg', title: 'Luz Por Zonas', description: 'Trilhos de luz independentes para criar cenários distintos.', number: '03' },
+  { image: '/studio14.jpeg', title: 'Cabeceira Luminosa', description: 'Cabeceira em veludo com luz ambiente difusa para um mood elegante.', number: '04' },
+  { image: '/studio1.jpeg', title: 'Cabeceira Luminosa', description: 'Cabeceira em veludo com luz ambiente difusa para um mood elegante.', number: '05' },
 ];
 
 export default function Home() {
@@ -35,7 +35,7 @@ export default function Home() {
       <Hero />
 
       {/* Section 2 — Reserva. Vive. */}
-      <section className="py-24 md:py-32 bg-[#0a0a0a] relative">
+      <section className="py-24 md:py-32 bg-[#0a0a0a] relative" style={{ minHeight: '80vh' }}>
         <div className="max-w-7xl mx-auto px-6 sm:px-10">
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 lg:gap-20 items-start">
 
@@ -119,7 +119,7 @@ export default function Home() {
       <ScrollCarousel studioName="Eclipse" items={eclipse} direction="left-to-right" />
 
       {/* Atreves-te Section */}
-      <section className="py-24 md:py-32 bg-[#0a0a0a]">
+      <section className="py-24 md:py-32 bg-[#0a0a0a]" style={{ minHeight: '80vh' }}>
         <div className="max-w-7xl mx-auto px-6 sm:px-10">
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 lg:gap-20 items-center">
 
@@ -129,7 +129,7 @@ export default function Home() {
                 <img
                   src="/dmn.webp"
                   alt="Dominação"
-                  className="w-full rounded-2xl object-cover aspect-[3/4]"
+                  className="w-full max-w-md mx-auto rounded-2xl object-cover aspect-[3/4]"
                 />
                 <div className="absolute bottom-0 left-0 right-0">
                   <div className="bg-white text-black text-center font-semibold text-sm uppercase tracking-wider py-4 rounded-b-2xl">
@@ -255,7 +255,7 @@ function FaqItem({ question, answer }: { question: string; answer: string[] }) {
 
 function FaqSection() {
   return (
-    <section className="py-24 md:py-32 bg-[#0a0a0a]">
+    <section className="py-24 md:py-32 bg-[#0a0a0a]" style={{ minHeight: '80vh' }}>
       <div className="max-w-3xl mx-auto px-6 sm:px-10">
         <AnimateOnScroll animation="fade-up">
           <div className="text-center mb-16">
