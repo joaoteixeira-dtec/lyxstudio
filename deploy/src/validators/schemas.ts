@@ -8,8 +8,8 @@ export const createBookingSchema = z.object({
   email: z.string().email('Email inválido'),
   phone: z.string().min(6, 'Telefone é obrigatório').max(30),
   notes: z.string().max(1000).optional().default(''),
-}).refine(data => new Date(data.check_out) > new Date(data.check_in), {
-  message: 'A data de check-out deve ser posterior ao check-in',
+}).refine(data => new Date(data.check_out) >= new Date(data.check_in), {
+  message: 'A data de check-out deve ser igual ou posterior ao check-in',
   path: ['check_out'],
 });
 

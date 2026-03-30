@@ -1,0 +1,21 @@
+{
+  "indexes": [
+    {
+      "collectionGroup": "bookings",
+      "queryScope": "COLLECTION",
+      "fields": [
+        { "fieldPath": "check_in", "order": "ASCENDING" },
+        { "fieldPath": "check_out", "order": "ASCENDING" }
+      ]
+    },
+    {
+      "collectionGroup": "blackouts",
+      "queryScope": "COLLECTION",
+      "fields": [
+        { "fieldPath": "date_from", "order": "ASCENDING" },
+        { "fieldPath": "date_to", "order": "ASCENDING" }
+      ]
+    }
+  ],
+  "fieldOverrides": []
+}
