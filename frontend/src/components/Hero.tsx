@@ -20,7 +20,7 @@ export default function Hero() {
           <img
             src="/logo.png"
             alt="Lyx Studios"
-            className="h-24 sm:h-28 md:h-32 w-auto mx-auto"
+            className="h-36 sm:h-28 md:h-32 w-auto mx-auto"
           />
         </Link>
 
