@@ -91,25 +91,23 @@ const NAV_ITEMS: { id: Section; label: string; icon: React.ReactNode; badge?: st
   { id: 'audit', label: 'Auditoria', icon: Ic.audit },
 ];
 
-// ── Sidebar ────────────────────────────────────────────────────────────────
-interface SidebarProps {
+// ── Sidebar inner content (shared between desktop & mobile drawer) ─────────
+interface SidebarContentProps {
   collapsed: boolean;
   active: Section;
   onNavigate: (s: Section) => void;
-  onToggle: () => void;
+  onToggle?: () => void;
+  onClose?: () => void;
   onLogout: () => void;
+  isMobile?: boolean;
 }
 
-function Sidebar({ collapsed, active, onNavigate, onToggle, onLogout }: SidebarProps) {
+function SidebarContent({ collapsed, active, onNavigate, onToggle, onClose, onLogout, isMobile }: SidebarContentProps) {
   return (
-    <aside
-      className="flex flex-col border-r border-white/[0.06] bg-[#0e0e0e] relative z-20 flex-shrink-0"
-      style={{ width: collapsed ? 64 : 240, transition: 'width 0.28s cubic-bezier(0.4,0,0.2,1)' }}
-    >
+    <>
       {/* Brand */}
-      <div className="flex items-center px-4 border-b border-white/[0.06]" style={{ height: 64 }}>
-        <div className="flex items-center gap-3 overflow-hidden">
-          {/* Logo mark — matches Navbar: LYX white + S yellow */}
+      <div className="flex items-center px-4 border-b border-white/[0.06] flex-shrink-0" style={{ height: 64 }}>
+        <div className="flex items-center gap-3 overflow-hidden flex-1">
           <div
             className="flex-shrink-0 w-8 h-8 rounded-xl bg-[#0e0e0e] border border-white/[0.08] flex items-center justify-center"
             style={{ boxShadow: '0 0 16px rgba(226,255,0,0.15)' }}
@@ -120,7 +118,7 @@ function Sidebar({ collapsed, active, onNavigate, onToggle, onLogout }: SidebarP
           </div>
           <div
             className="overflow-hidden whitespace-nowrap"
-            style={{
+            style={isMobile ? {} : {
               maxWidth: collapsed ? 0 : 200,
               opacity: collapsed ? 0 : 1,
               transition: 'max-width 0.28s cubic-bezier(0.4,0,0.2,1), opacity 0.2s ease',
@@ -133,29 +131,43 @@ function Sidebar({ collapsed, active, onNavigate, onToggle, onLogout }: SidebarP
             <p className="text-[10px] text-[#555] leading-tight">Backoffice</p>
           </div>
         </div>
+        {/* Close button — mobile only */}
+        {isMobile && onClose && (
+          <button
+            onClick={onClose}
+            className="w-8 h-8 rounded-lg bg-white/[0.04] hover:bg-white/[0.08] flex items-center justify-center text-[#666] hover:text-white transition-all flex-shrink-0"
+          >
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" className="w-4 h-4">
+              <line x1="18" y1="6" x2="6" y2="18" /><line x1="6" y1="6" x2="18" y2="18" />
+            </svg>
+          </button>
+        )}
       </div>
 
-      {/* Toggle button */}
-      <button
-        onClick={onToggle}
-        className="absolute -right-3 top-[52px] w-6 h-6 rounded-full bg-[#1a1a1a] border border-white/10 flex items-center justify-center text-[#666] hover:text-[#e2ff00] hover:border-[#e2ff00]/30 transition-all duration-200 z-30"
-        title={collapsed ? 'Expandir menu' : 'Recolher menu'}
-      >
-        <div className="w-3 h-3">{collapsed ? Ic.chevronRight : Ic.chevronLeft}</div>
-      </button>
+      {/* Desktop collapse toggle */}
+      {!isMobile && onToggle && (
+        <button
+          onClick={onToggle}
+          className="absolute -right-3 top-[52px] w-6 h-6 rounded-full bg-[#1a1a1a] border border-white/10 flex items-center justify-center text-[#666] hover:text-[#e2ff00] hover:border-[#e2ff00]/30 transition-all duration-200 z-30"
+          title={collapsed ? 'Expandir menu' : 'Recolher menu'}
+        >
+          <div className="w-3 h-3">{collapsed ? Ic.chevronRight : Ic.chevronLeft}</div>
+        </button>
+      )}
 
       {/* Nav */}
-      <nav className="flex-1 px-2 py-4 space-y-0.5 overflow-y-auto overflow-x-hidden scrollbar-none">
+      <nav className="flex-1 px-2 py-4 space-y-0.5 overflow-y-auto overflow-x-hidden">
         {NAV_ITEMS.map((item) => {
           const isActive = active === item.id;
+          const isCollapsed = !isMobile && collapsed;
           return (
             <button
               key={item.id}
               onClick={() => onNavigate(item.id)}
-              title={collapsed ? item.label : undefined}
+              title={isCollapsed ? item.label : undefined}
               className={`
                 w-full flex items-center gap-3 rounded-xl transition-all duration-200 relative group
-                ${collapsed ? 'justify-center px-0 py-3' : 'px-3 py-2.5'}
+                ${isCollapsed ? 'justify-center px-0 py-3' : 'px-3 py-2.5'}
                 ${isActive
                   ? 'bg-[#e2ff00]/10 text-[#e2ff00]'
                   : 'text-[#666] hover:text-[#ccc] hover:bg-white/[0.04]'}
@@ -164,22 +176,20 @@ function Sidebar({ collapsed, active, onNavigate, onToggle, onLogout }: SidebarP
               {isActive && (
                 <div className="absolute left-0 top-1/2 -translate-y-1/2 w-0.5 h-5 bg-[#e2ff00] rounded-r-full" />
               )}
-              <div
-                className={`w-[18px] h-[18px] flex-shrink-0 transition-transform duration-200 ${!isActive ? 'group-hover:scale-110' : ''}`}
-              >
+              <div className={`w-[18px] h-[18px] flex-shrink-0 transition-transform duration-200 ${!isActive ? 'group-hover:scale-110' : ''}`}>
                 {item.icon}
               </div>
               <span
                 className="text-sm font-medium overflow-hidden whitespace-nowrap"
-                style={{
-                  maxWidth: collapsed ? 0 : 160,
-                  opacity: collapsed ? 0 : 1,
+                style={isMobile ? {} : {
+                  maxWidth: isCollapsed ? 0 : 160,
+                  opacity: isCollapsed ? 0 : 1,
                   transition: 'max-width 0.28s cubic-bezier(0.4,0,0.2,1), opacity 0.15s ease',
                 }}
               >
                 {item.label}
               </span>
-              {item.badge && !collapsed && (
+              {item.badge && !isCollapsed && (
                 <span className="ml-auto text-[10px] font-bold bg-[#e2ff00]/20 text-[#e2ff00] px-1.5 py-0.5 rounded-full">
                   {item.badge}
                 </span>
@@ -190,8 +200,8 @@ function Sidebar({ collapsed, active, onNavigate, onToggle, onLogout }: SidebarP
       </nav>
 
       {/* User + Logout */}
-      <div className="px-2 py-3 border-t border-white/[0.06] space-y-0.5">
-        {!collapsed && (
+      <div className="px-2 py-3 border-t border-white/[0.06] space-y-0.5 flex-shrink-0">
+        {(isMobile || !collapsed) && (
           <div className="flex items-center gap-2.5 px-3 py-2 rounded-xl bg-white/[0.03] mb-1">
             <div className="w-7 h-7 rounded-full bg-[#e2ff00]/15 border border-[#e2ff00]/20 flex items-center justify-center flex-shrink-0">
               <span className="text-[#e2ff00] text-xs font-bold">A</span>
@@ -204,13 +214,13 @@ function Sidebar({ collapsed, active, onNavigate, onToggle, onLogout }: SidebarP
         )}
         <button
           onClick={onLogout}
-          title={collapsed ? 'Terminar sessão' : undefined}
-          className={`w-full flex items-center gap-3 rounded-xl py-2.5 text-[#666] hover:text-red-400 hover:bg-red-500/[0.08] transition-all duration-200 group ${collapsed ? 'justify-center px-0' : 'px-3'}`}
+          title={!isMobile && collapsed ? 'Terminar sessão' : undefined}
+          className={`w-full flex items-center gap-3 rounded-xl py-2.5 text-[#666] hover:text-red-400 hover:bg-red-500/[0.08] transition-all duration-200 group ${!isMobile && collapsed ? 'justify-center px-0' : 'px-3'}`}
         >
           <div className="w-[18px] h-[18px] flex-shrink-0">{Ic.logout}</div>
           <span
             className="text-sm overflow-hidden whitespace-nowrap"
-            style={{
+            style={isMobile ? {} : {
               maxWidth: collapsed ? 0 : 160,
               opacity: collapsed ? 0 : 1,
               transition: 'max-width 0.28s cubic-bezier(0.4,0,0.2,1), opacity 0.15s ease',
@@ -220,7 +230,7 @@ function Sidebar({ collapsed, active, onNavigate, onToggle, onLogout }: SidebarP
           </span>
         </button>
       </div>
-    </aside>
+    </>
   );
 }
 
@@ -228,12 +238,14 @@ function Sidebar({ collapsed, active, onNavigate, onToggle, onLogout }: SidebarP
 export default function AdminLayout() {
   const { token, logout } = useAuth();
   const [collapsed, setCollapsed] = useState(false);
+  const [mobileOpen, setMobileOpen] = useState(false);
   const [active, setActive] = useState<Section>('dashboard');
   const [sectionKey, setSectionKey] = useState(0);
 
   const navigate = (s: Section) => {
     setActive(s);
     setSectionKey((k) => k + 1);
+    setMobileOpen(false); // close drawer on mobile after navigation
   };
 
   const renderSection = () => {
@@ -247,23 +259,86 @@ export default function AdminLayout() {
     }
   };
 
+  const activeLabel = NAV_ITEMS.find((i) => i.id === active)?.label ?? '';
+
   return (
     <div className="flex h-screen bg-[#0a0a0a] overflow-hidden">
-      <Sidebar
-        collapsed={collapsed}
-        active={active}
-        onNavigate={navigate}
-        onToggle={() => setCollapsed((c) => !c)}
-        onLogout={logout}
-      />
 
-      <main
-        key={sectionKey}
-        className="flex-1 overflow-y-auto overflow-x-hidden admin-section-enter"
-        style={{ minWidth: 0 }}
+      {/* ── Desktop sidebar (md+) ── */}
+      <aside
+        className="hidden md:flex flex-col border-r border-white/[0.06] bg-[#0e0e0e] relative z-20 flex-shrink-0"
+        style={{ width: collapsed ? 64 : 240, transition: 'width 0.28s cubic-bezier(0.4,0,0.2,1)' }}
       >
-        {renderSection()}
-      </main>
+        <SidebarContent
+          collapsed={collapsed}
+          active={active}
+          onNavigate={navigate}
+          onToggle={() => setCollapsed((c) => !c)}
+          onLogout={logout}
+        />
+      </aside>
+
+      {/* ── Mobile drawer backdrop ── */}
+      {mobileOpen && (
+        <div
+          className="fixed inset-0 z-40 bg-black/60 backdrop-blur-sm md:hidden"
+          onClick={() => setMobileOpen(false)}
+        />
+      )}
+
+      {/* ── Mobile drawer ── */}
+      <aside
+        className={`
+          fixed top-0 left-0 h-full z-50 flex flex-col bg-[#0e0e0e] border-r border-white/[0.06] md:hidden
+          transition-transform duration-300 ease-[cubic-bezier(0.4,0,0.2,1)]
+          ${mobileOpen ? 'translate-x-0' : '-translate-x-full'}
+        `}
+        style={{ width: 260 }}
+      >
+        <SidebarContent
+          collapsed={false}
+          active={active}
+          onNavigate={navigate}
+          onClose={() => setMobileOpen(false)}
+          onLogout={logout}
+          isMobile
+        />
+      </aside>
+
+      {/* ── Content area ── */}
+      <div className="flex flex-col flex-1 min-w-0 overflow-hidden">
+
+        {/* Mobile top bar */}
+        <header className="md:hidden flex items-center gap-3 px-4 bg-[#0e0e0e] border-b border-white/[0.06] flex-shrink-0" style={{ height: 56 }}>
+          <button
+            onClick={() => setMobileOpen(true)}
+            className="w-9 h-9 rounded-xl bg-white/[0.04] hover:bg-white/[0.08] flex items-center justify-center text-[#888] hover:text-white transition-all"
+            aria-label="Abrir menu"
+          >
+            <div className="w-5 h-5">{Ic.menu}</div>
+          </button>
+          <div className="flex items-center gap-2 flex-1 min-w-0">
+            <div
+              className="w-6 h-6 rounded-lg bg-[#0e0e0e] border border-white/[0.08] flex items-center justify-center flex-shrink-0"
+              style={{ boxShadow: '0 0 10px rgba(226,255,0,0.15)' }}
+            >
+              <span className="font-display font-black text-[9px] leading-none tracking-tighter select-none">
+                <span className="text-white">L</span><span className="text-[#e2ff00]">S</span>
+              </span>
+            </div>
+            <span className="font-display font-semibold text-sm text-white truncate">{activeLabel}</span>
+          </div>
+        </header>
+
+        {/* Main scrollable content */}
+        <main
+          key={sectionKey}
+          className="flex-1 overflow-y-auto overflow-x-hidden admin-section-enter"
+          style={{ minWidth: 0 }}
+        >
+          {renderSection()}
+        </main>
+      </div>
     </div>
   );
 }
