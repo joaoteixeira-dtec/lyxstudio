@@ -119,3 +119,31 @@ export const adminLogin = (email: string, password: string) =>
     method: 'POST',
     body: JSON.stringify({ email, password }),
   });
+
+// ---- SMTP ----
+export interface SmtpConfigData {
+  host: string;
+  port: string;
+  user: string;
+  password: string;
+  fromName: string;
+  fromEmail: string;
+  secure: boolean;
+}
+
+export const getSmtpConfig = (token: string) =>
+  request<Partial<SmtpConfigData>>('/settings/smtp', { headers: authHeaders(token) });
+
+export const saveSmtpConfig = (config: SmtpConfigData, token: string) =>
+  request<{ message: string }>('/settings/smtp', {
+    method: 'PUT',
+    body: JSON.stringify(config),
+    headers: authHeaders(token),
+  });
+
+export const testSmtpConnection = (config: Pick<SmtpConfigData, 'host' | 'port' | 'user' | 'password' | 'secure'>, token: string) =>
+  request<{ ok: boolean; message?: string; error?: string }>('/admin/smtp-test', {
+    method: 'POST',
+    body: JSON.stringify(config),
+    headers: authHeaders(token),
+  });

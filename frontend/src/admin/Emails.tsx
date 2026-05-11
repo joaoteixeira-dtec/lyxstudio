@@ -1,6 +1,7 @@
-import { useState, useRef } from 'react';
+import { useState, useRef, useEffect } from 'react';
 import { pushAudit } from './auditStore';
 import { useToast } from '../components/Toast';
+import { getSmtpConfig, saveSmtpConfig, testSmtpConnection } from '../services/api';
 
 interface Props { token: string }
 
@@ -472,7 +473,7 @@ function ComposeModal({
 }
 
 // ── SMTP tab ────────────────────────────────────────────────────────────────
-function SmtpTab() {
+function SmtpTab({ token }: { token: string }) {
   const [config, setConfig] = useState<SmtpConfig>({ ...DEFAULT_SMTP });
   const [saving, setSaving] = useState(false);
   const [testing, setTesting] = useState(false);
@@ -480,31 +481,52 @@ function SmtpTab() {
   const [showPwd, setShowPwd] = useState(false);
   const { addToast } = useToast();
 
+  useEffect(() => {
+    getSmtpConfig(token)
+      .then((data) => {
+        if (data && data.host) {
+          setConfig((c) => ({ ...c, ...data } as SmtpConfig));
+        }
+      })
+      .catch(() => { /* config ainda não guardada, mantém defaults */ });
+  }, [token]);
+
   const inputCls = 'w-full px-3 py-2.5 bg-[#161616] border border-white/[0.06] rounded-xl text-sm text-white focus:border-white/30 focus:ring-1 focus:ring-white/10 outline-none transition-all placeholder-[#444]';
 
   const set = (k: keyof SmtpConfig) => (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) =>
     setConfig((c) => ({ ...c, [k]: e.target.type === 'checkbox' ? (e.target as HTMLInputElement).checked : e.target.value }));
 
-  const save = (e: React.FormEvent) => {
+  const save = async (e: React.FormEvent) => {
     e.preventDefault();
     setSaving(true);
-    setTimeout(() => {
+    try {
+      await saveSmtpConfig(config, token);
       pushAudit('Configurações SMTP guardadas', `${config.host}:${config.port} (${config.fromEmail})`, 'Emails', 'success');
       addToast('Configurações de email guardadas!', 'success');
+    } catch (err: any) {
+      addToast(err.message || 'Erro ao guardar configurações.', 'error');
+    } finally {
       setSaving(false);
-    }, 800);
+    }
   };
 
-  const testConnection = () => {
+  const testConnection = async () => {
     if (!config.host || !config.user) { addToast('Preenche o servidor e utilizador primeiro.', 'error'); return; }
+    if (!config.password) { addToast('Preenche a password / app key primeiro.', 'error'); return; }
     setTesting(true);
     setTestResult('idle');
-    setTimeout(() => {
+    try {
+      await testSmtpConnection({ host: config.host, port: config.port, user: config.user, password: config.password, secure: config.secure }, token);
       setTestResult('ok');
+      pushAudit('Teste SMTP', `Ligação a ${config.host}:${config.port} — OK`, 'Emails', 'success');
+      addToast('Ligação SMTP testada com sucesso!', 'success');
+    } catch (err: any) {
+      setTestResult('fail');
+      pushAudit('Teste SMTP', `Falha a ${config.host}:${config.port} — ${err.message}`, 'Emails', 'error');
+      addToast(err.message || 'Falha na ligação SMTP.', 'error');
+    } finally {
       setTesting(false);
-      pushAudit('Teste SMTP', `Ligação a ${config.host}:${config.port} — OK (simulado)`, 'Emails', 'success');
-      addToast('Ligação SMTP testada com sucesso! (simulado)', 'success');
-    }, 2000);
+    }
   };
 
   const PROVIDERS = [
@@ -641,7 +663,7 @@ function SmtpTab() {
 }
 
 // ── Main ─────────────────────────────────────────────────────────────────────
-export default function Emails({ token: _token }: Props) {
+export default function Emails({ token }: Props) {
   const [tab, setTab] = useState<Tab>('automations');
   const [rules, setRules] = useState<AutoRule[]>(DEFAULT_RULES);
   const [editing, setEditing] = useState<AutoRule | null>(null);
@@ -847,7 +869,7 @@ export default function Emails({ token: _token }: Props) {
       )}
 
       {/* ── SMTP tab ── */}
-      {tab === 'smtp' && <SmtpTab />}
+      {tab === 'smtp' && <SmtpTab token={token} />}
 
       {/* ── Modals ── */}
       {editing && <EditModal rule={editing} onSave={updateRule} onClose={() => setEditing(null)} />}
