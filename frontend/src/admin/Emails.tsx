@@ -1,7 +1,7 @@
 import { useState, useRef, useEffect } from 'react';
 import { pushAudit } from './auditStore';
 import { useToast } from '../components/Toast';
-import { getSmtpConfig, saveSmtpConfig, testSmtpConnection } from '../services/api';
+import { getSmtpConfig, saveSmtpConfig, testSmtpConnection, sendEmail } from '../services/api';
 
 interface Props { token: string }
 
@@ -312,9 +312,11 @@ function EditModal({
 // ── Test modal ──────────────────────────────────────────────────────────────
 function TestModal({
   rule,
+  token,
   onClose,
 }: {
   rule: AutoRule;
+  token: string;
   onClose: () => void;
 }) {
   const [testEmail, setTestEmail] = useState('');
@@ -322,16 +324,27 @@ function TestModal({
   const [sent, setSent] = useState(false);
   const { addToast } = useToast();
 
-  const send = (e: React.FormEvent) => {
+  const send = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!testEmail) return;
     setSending(true);
-    setTimeout(() => {
+    try {
+      const previewBody = rule.body
+        .replace(/\{\{nome\}\}/g, 'João Silva')
+        .replace(/\{\{check_in\}\}/g, '10 Abr 2026')
+        .replace(/\{\{check_out\}\}/g, '14 Abr 2026')
+        .replace(/\{\{hospedes\}\}/g, '2')
+        .replace(/\{\{email\}\}/g, testEmail);
+      await sendEmail({ to: testEmail, subject: `[TESTE] ${rule.subject}`, body: previewBody }, token);
       pushAudit('Email de teste enviado', `Trigger: ${rule.label} → ${testEmail}`, 'Emails', 'info');
-      addToast('Email de teste enviado! (simulado)', 'success');
-      setSending(false);
+      addToast('Email de teste enviado com sucesso!', 'success');
       setSent(true);
-    }, 1400);
+    } catch (err: any) {
+      addToast(err.message || 'Erro ao enviar email de teste.', 'error');
+      pushAudit('Email de teste falhou', `Para: ${testEmail} — ${err.message}`, 'Emails', 'error');
+    } finally {
+      setSending(false);
+    }
   };
 
   const inputCls = 'w-full px-3 py-2.5 bg-[#161616] border border-white/[0.06] rounded-xl text-sm text-white focus:border-white/30 outline-none transition-all placeholder-[#444]';
@@ -406,10 +419,12 @@ function TestModal({
 // ── Compose modal (manual) ──────────────────────────────────────────────────
 function ComposeModal({
   template,
+  token,
   onClose,
   onSent,
 }: {
   template: (typeof MANUAL_TEMPLATES)[0] | null;
+  token: string;
   onClose: () => void;
   onSent: (e: SentEmail) => void;
 }) {
@@ -420,19 +435,27 @@ function ComposeModal({
   const { addToast } = useToast();
   const inputCls = 'w-full px-3 py-2.5 bg-[#161616] border border-white/[0.06] rounded-xl text-sm text-white focus:border-white/30 outline-none transition-all placeholder-[#444]';
 
-  const handleSend = (e: React.FormEvent) => {
+  const handleSend = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!to || !subject || !body) { addToast('Preenche todos os campos.', 'error'); return; }
     setSending(true);
-    setTimeout(() => {
+    try {
+      await sendEmail({ to, subject, body }, token);
       const entry: SentEmail = { id: Date.now().toString(), to, subject, trigger: template?.name ?? 'Manual', sentAt: new Date(), status: 'sent' };
       sentLog.unshift(entry);
       onSent(entry);
       pushAudit('Email manual enviado', `Para: ${to} — ${template?.name ?? 'Manual'}`, 'Emails', 'info');
-      addToast('Email enviado! (simulado)', 'success');
-      setSending(false);
+      addToast('Email enviado com sucesso!', 'success');
       onClose();
-    }, 1200);
+    } catch (err: any) {
+      const entry: SentEmail = { id: Date.now().toString(), to, subject, trigger: template?.name ?? 'Manual', sentAt: new Date(), status: 'failed' };
+      sentLog.unshift(entry);
+      onSent(entry);
+      pushAudit('Email manual falhou', `Para: ${to} — ${err.message}`, 'Emails', 'error');
+      addToast(err.message || 'Erro ao enviar email.', 'error');
+    } finally {
+      setSending(false);
+    }
   };
 
   return (
@@ -873,10 +896,11 @@ export default function Emails({ token }: Props) {
 
       {/* ── Modals ── */}
       {editing && <EditModal rule={editing} onSave={updateRule} onClose={() => setEditing(null)} />}
-      {testing && <TestModal rule={testing} onClose={() => setTesting(null)} />}
+      {testing && <TestModal rule={testing} token={token} onClose={() => setTesting(null)} />}
       {compose !== null && (
         <ComposeModal
           template={compose === 'new' ? null : compose}
+          token={token}
           onClose={() => setCompose(null)}
           onSent={handleSent}
         />

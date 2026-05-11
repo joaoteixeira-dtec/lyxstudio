@@ -8,3 +8,7 @@ dist/
 *.db
 WhatsApp *
 .vercel
+
+backend/seeds/*.js
+backend/seeds/*.d.ts
+backend/seeds/*.map

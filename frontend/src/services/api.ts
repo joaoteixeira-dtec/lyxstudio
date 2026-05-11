@@ -147,3 +147,10 @@ export const testSmtpConnection = (config: Pick<SmtpConfigData, 'host' | 'port' 
     body: JSON.stringify(config),
     headers: authHeaders(token),
   });
+
+export const sendEmail = (data: { to: string; subject: string; body: string }, token: string) =>
+  request<{ ok: boolean; messageId?: string; error?: string }>('/admin/email-send', {
+    method: 'POST',
+    body: JSON.stringify(data),
+    headers: authHeaders(token),
+  });

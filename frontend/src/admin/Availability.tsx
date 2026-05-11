@@ -66,15 +66,20 @@ export default function Availability({ token }: Props) {
 
   const load = useCallback(async () => {
     setLoading(true);
-    try {
-      const [bk, bl] = await Promise.all([getBookings(), getBlackouts(token)]);
-      setBookings(bk);
-      setBlackouts(bl);
-    } catch {
-      addToast('Erro ao carregar disponibilidades.', 'error');
-    } finally {
-      setLoading(false);
+    const [bkResult, blResult] = await Promise.allSettled([getBookings(), getBlackouts(token)]);
+    if (bkResult.status === 'fulfilled') {
+      setBookings(bkResult.value);
+    } else {
+      console.error('Erro ao carregar reservas:', bkResult.reason);
+      addToast(`Erro ao carregar reservas: ${bkResult.reason?.message || 'desconhecido'}`, 'error');
     }
+    if (blResult.status === 'fulfilled') {
+      setBlackouts(blResult.value);
+    } else {
+      console.error('Erro ao carregar bloqueios:', blResult.reason);
+      addToast(`Erro ao carregar bloqueios: ${blResult.reason?.message || 'desconhecido'}`, 'error');
+    }
+    setLoading(false);
   }, [token, addToast]);
 
   useEffect(() => { load(); }, [load]);

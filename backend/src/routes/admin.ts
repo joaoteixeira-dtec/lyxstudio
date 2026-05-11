@@ -73,4 +73,50 @@ router.post('/smtp-test', authMiddleware, async (req: AuthRequest, res: Response
   }
 });
 
+// POST /api/admin/email-send — envia email real usando SMTP guardado (requer auth)
+router.post('/email-send', authMiddleware, async (req: AuthRequest, res: Response) => {
+  try {
+    const { to, subject, body } = req.body;
+    if (!to || !subject || !body) {
+      res.status(400).json({ error: 'Campos obrigatórios: to, subject, body.' });
+      return;
+    }
+
+    const smtpDoc = await db.collection('settings').doc('smtp').get();
+    if (!smtpDoc.exists) {
+      res.status(400).json({ error: 'Configuração SMTP em falta. Guarde primeiro nas Definições de Email.' });
+      return;
+    }
+    const smtp = smtpDoc.data() as any;
+    if (!smtp.host || !smtp.port || !smtp.user || !smtp.password) {
+      res.status(400).json({ error: 'Configuração SMTP incompleta. Verifique host, port, utilizador e password.' });
+      return;
+    }
+
+    const transporter = nodemailer.createTransport({
+      host: smtp.host,
+      port: parseInt(smtp.port, 10),
+      secure: !!smtp.secure,
+      auth: { user: smtp.user, pass: smtp.password },
+    });
+
+    const fromName = smtp.fromName || 'LYX Studios';
+    const fromEmail = smtp.fromEmail || smtp.user;
+    const from = `"${fromName}" <${fromEmail}>`;
+
+    const isHtml = /<[a-z][\s\S]*>/i.test(body);
+    const info = await transporter.sendMail({
+      from,
+      to,
+      subject,
+      ...(isHtml ? { html: body } : { text: body }),
+    });
+
+    res.json({ ok: true, messageId: info.messageId });
+  } catch (err: any) {
+    console.error('Erro ao enviar email:', err);
+    res.status(500).json({ ok: false, error: err.message || 'Erro ao enviar email.' });
+  }
+});
+
 export default router;
