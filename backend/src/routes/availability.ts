@@ -105,7 +105,7 @@ router.get('/blackouts', authMiddleware, async (_req: AuthRequest, res: Response
 // DELETE /api/availability/blackouts/:id — admin: remover blackout
 router.delete('/blackouts/:id', authMiddleware, async (req: AuthRequest, res: Response) => {
   try {
-    const id = req.params.id as string;
+    const id = String(req.params.id);
     const docRef = db.collection('blackouts').doc(id);
     const existing = await docRef.get();
     if (!existing.exists) {

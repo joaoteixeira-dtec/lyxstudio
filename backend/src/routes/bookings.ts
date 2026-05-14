@@ -88,7 +88,7 @@ router.post('/', async (req: Request, res: Response) => {
 // PATCH /api/bookings/:id — admin: alterar estado
 router.patch('/:id', authMiddleware, async (req: AuthRequest, res: Response) => {
   try {
-    const id = req.params.id as string;
+    const id = String(req.params.id);
     const parsed = updateBookingStatusSchema.safeParse(req.body);
     if (!parsed.success) {
       res.status(400).json({ error: parsed.error.flatten().fieldErrors });
